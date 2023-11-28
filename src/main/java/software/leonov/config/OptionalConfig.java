@@ -74,7 +74,7 @@ import com.typesafe.config.ConfigValueType;
  * <p>
  * See issues <a href="https://github.com/lightbend/config/issues/186">186</a>,
  * <a href="https://github.com/lightbend/config/issues/282" _target="blank">282</a>,
- * <a href="https://github.com/lightbend/config/issues/282" _target="blank">286</a>,
+ * <a href="https://github.com/lightbend/config/issues/286" _target="blank">286</a>,
  * <a href="https://github.com/lightbend/config/issues/110" _target="blank">110</a>,
  * <a href="https://github.com/lightbend/config/issues/440" _target="blank">440</a> for historical discussion.
  * <p>
