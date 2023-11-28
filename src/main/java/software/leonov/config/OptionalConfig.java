@@ -771,8 +771,8 @@ public final class OptionalConfig {
      * @throws com.typesafe.config.ConfigException.Null      if the property is set to {@code null} and
      *                                                       {@link #setStrictMode(boolean) strict-mode} is enabled
      * @throws com.typesafe.config.ConfigException.BadValue  if the property value cannot be converted into a {@link Path}
-     *                                                       because it contains invalid characters, or for other file
-     *                                                       system specific reasons
+     *                                                       because it contains invalid characters or for other file system
+     *                                                       specific reasons
      * @throws com.typesafe.config.ConfigException.WrongType if the property value cannot otherwise be converted to a
      *                                                       {@code Path}
      */
@@ -790,8 +790,8 @@ public final class OptionalConfig {
      * @return a {@link java.nio.file.Path} for the {@link Optional optional} property at the given {@code path} expression
      *         or an {@link Optional#empty empty} {@code Optional} instance if the property is absent or set to {@code null}
      * @throws com.typesafe.config.ConfigException.BadValue  if the property value cannot be converted into a {@link Path}
-     *                                                       because it contains invalid characters, or for other file
-     *                                                       system specific reasons
+     *                                                       because it contains invalid characters or for other file system
+     *                                                       specific reasons
      * @throws com.typesafe.config.ConfigException.WrongType if the property value cannot otherwise be converted to a
      *                                                       {@code Path}
      */
@@ -816,7 +816,7 @@ public final class OptionalConfig {
      * @throws com.typesafe.config.ConfigException.BadValue  if the property value does not reference an
      *                                                       {@link Files#isRegularFile(Path, LinkOption...) existing} file,
      *                                                       or if it cannot be converted into a {@link Path} because it
-     *                                                       contains invalid characters, or for other file system specific
+     *                                                       contains invalid characters or for other file system specific
      *                                                       reasons
      * @throws com.typesafe.config.ConfigException.WrongType if the property value cannot otherwise be converted to a
      *                                                       {@code Path}
@@ -841,7 +841,7 @@ public final class OptionalConfig {
      * @throws com.typesafe.config.ConfigException.BadValue  if the property value does not reference an
      *                                                       {@link Files#isRegularFile(Path, LinkOption...) existing} file,
      *                                                       or if it cannot be converted into a {@link Path} because it
-     *                                                       contains invalid characters, or for other file system specific
+     *                                                       contains invalid characters or for other file system specific
      *                                                       reasons
      * @throws com.typesafe.config.ConfigException.WrongType if the property value cannot otherwise be converted to a
      *                                                       {@code Path}
@@ -868,8 +868,8 @@ public final class OptionalConfig {
      * @throws com.typesafe.config.ConfigException.BadValue  if the property value does not reference an
      *                                                       {@link Files#isDirectory(Path, LinkOption...) existing}
      *                                                       directory, or if it cannot be converted into a {@link Path}
-     *                                                       because it contains invalid characters, or for other file
-     *                                                       system specific reasons
+     *                                                       because it contains invalid characters or for other file system
+     *                                                       specific reasons
      * @throws com.typesafe.config.ConfigException.WrongType if the property value cannot otherwise be converted to a
      *                                                       {@code Path}
      */
@@ -893,8 +893,8 @@ public final class OptionalConfig {
      * @throws com.typesafe.config.ConfigException.BadValue  if the property value does not reference an
      *                                                       {@link Files#isDirectory(Path, LinkOption...) existing}
      *                                                       directory, or if it cannot be converted into a {@link Path}
-     *                                                       because it contains invalid characters, or for other file
-     *                                                       system specific reasons
+     *                                                       because it contains invalid characters or for other file system
+     *                                                       specific reasons
      * @throws com.typesafe.config.ConfigException.WrongType if the property value cannot otherwise be converted to a
      *                                                       {@code Path}
      */
@@ -966,7 +966,7 @@ public final class OptionalConfig {
      * @throws com.typesafe.config.ConfigException.BadValue  if one or more of the list elements does not reference an
      *                                                       {@link Files#isRegularFile(Path, LinkOption...) existing} file,
      *                                                       or cannot be converted into a {@link Path} because it contains
-     *                                                       invalid characters, or for other file system specific reasons
+     *                                                       invalid characters or for other file system specific reasons
      * @throws com.typesafe.config.ConfigException.WrongType if the property value cannot otherwise be converted to a
      *                                                       {@code List} of {@code Path}s
      */
@@ -990,7 +990,7 @@ public final class OptionalConfig {
      *         empty} {@code Optional} instance if the property is absent or set to {@code null}
      * @throws com.typesafe.config.ConfigException.BadValue  if one or more of the list elements does not reference an
      *                                                       {@link Files#isRegularFile(Path, LinkOption...) existing} file,
-     *                                                       or it contains invalid characters, or for other file system
+     *                                                       or it contains invalid characters or for other file system
      *                                                       specific reasons
      * @throws com.typesafe.config.ConfigException.WrongType if the property value cannot otherwise be converted to a
      *                                                       {@code List} of {@code Path}s
@@ -1018,7 +1018,7 @@ public final class OptionalConfig {
      * @throws com.typesafe.config.ConfigException.BadValue  if one or more of the list elements does not reference an
      *                                                       {@link Files#isDirectory(Path, LinkOption...) existing}
      *                                                       directory, or cannot be converted into a {@link Path} because
-     *                                                       it contains invalid characters, or for other file system
+     *                                                       it contains invalid characters or for other file system
      *                                                       specific reasons
      * @throws com.typesafe.config.ConfigException.WrongType if the property value cannot otherwise be converted to a
      *                                                       {@code List} of {@code Path}s
@@ -1044,7 +1044,7 @@ public final class OptionalConfig {
      * @throws com.typesafe.config.ConfigException.BadValue  if one or more of the list elements does not reference an
      *                                                       {@link Files#isDirectory(Path, LinkOption...) existing}
      *                                                       directory, or cannot be converted into a {@link Path} because
-     *                                                       it contains invalid characters, or for other file system
+     *                                                       it contains invalid characters or for other file system
      *                                                       specific reasons
      * @throws com.typesafe.config.ConfigException.WrongType if the property value cannot otherwise be converted to a
      *                                                       {@code List} of {@code Path}s
