@@ -182,7 +182,7 @@ import com.typesafe.config.ConfigValueType;
  * </table>
  * </pre>
  * <p>
- * <strong>Additional functionality</strong>
+ * <strong>Additional functionality:</strong>
  * <p>
  * This class offers a handful of additional methods which have no equivalent functionality in the {@link Config} class:
  * 
