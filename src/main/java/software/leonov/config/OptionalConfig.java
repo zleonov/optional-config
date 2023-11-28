@@ -41,7 +41,9 @@ import com.typesafe.config.ConfigValueType;
  * object to the {@link #from(Config)} method. The {@link #setStrictMode(boolean)} determines how this class treats
  * properties with {@code null} values.
  * <p>
- * <strong>Discusson:</strong> Typesafe Config is one of the more popular configuration libraries for JVM languages. The
+ * <strong>Discusson:</strong>
+ * <p>
+ * Typesafe Config is one of the more popular configuration libraries for JVM languages. The
  * authors of Typesafe Config take an opinionated view on the handling of
  * <a href="https://github.com/lightbend/config#how-to-handle-defaults" _target="blank">default properties</a>:
  * 
