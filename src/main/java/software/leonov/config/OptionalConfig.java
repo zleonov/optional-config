@@ -33,55 +33,20 @@ import com.typesafe.config.ConfigValue;
 import com.typesafe.config.ConfigValueType;
 
 /**
- * This class is a companion to the {@link Config} class in the configuration library
- * <a href="https://github.com/lightbend/config" target="_blank">Typesafe Config</a>, it allows users a more convenient
- * way to handle <i>optional</i> properties and provides a number of additional enhancements.
+ * This class offers users a better way to handle <i>optional</i> properties in the configuration library
+ * <a href="https://github.com/lightbend/config" target="_blank">Typesafe Config</a>. It is a companion to the Typesafe Config's {@link Config} class.
  * <p>
  * An instance of {@link OptionalConfig} is immutable and thread-safe. It can be constructed by passing a {@link Config}
  * object to the {@link #from(Config)} method. The {@link #setStrictMode(boolean)} determines how this class treats
  * properties with {@code null} values.
  * <p>
- * <strong>Discusson:</strong>
+ * <strong>Overview:</strong>
  * <p>
- * Typesafe Config is one of the more popular configuration libraries for JVM languages. The authors of Typesafe Config
- * take an opinionated view on the handling of
- * <a href="https://github.com/lightbend/config#how-to-handle-defaults" _target="blank">default properties</a>:
- * 
- * <pre><i>
- *  Many other configuration APIs allow you to provide a default to the getter methods, like this:
- *      
- *      boolean getBoolean(String path, boolean fallback)
- *  
- *  Here, if the path has no setting, the fallback would be returned. An API could also return null for unset values, so you would check for null:
- * 
- *      // returns null on unset, check for null and fall back
- *      Boolean getBoolean(String path)
- * 
- *  The methods on the Config interface do NOT do this, for two major reasons:
- * 
- *      1. If you use a config setting in two places, the default fallback value gets cut-and-pasted and typically out of sync.
- *         This can result in Very Evil Bugs.
- *      2. If the getter returns null (or None, in Scala) then every time you get a setting you have to write handling code
- *         for null/None and that code will almost always just throw an exception. Perhaps more commonly, people
- *         forget to check for null at all, so missing settings result in NullPointerException.
- * </i></pre>
- * 
- * While this is generally applicable to <i>default</i> values, it does not address scenarios where properties have no
- * defaults and are inherently <i>optional</i>. For instance, consider a directory copy utility capable of filtering on
- * file extensions. The utility would be expected to transfer all files indiscriminately if no file extensions are
- * specified. Without native capability to handle optional properties, developers would have to resort to writing
- * cumbersome boilerplate code or use special placeholder value to indicate <i>no filter</i>.
+ * Typesafe Config is one of the more popular configuration libraries for JVM languages. Unfortunately it doesn't offer
+ * a practical way to handle optional properties. This project is aims to elevate optional properties to a first-class
+ * feature by using Java's {@link Optional} class to offer a fluent and elegant solution.
  * <p>
- * See issues <a href="https://github.com/lightbend/config/issues/186">186</a>,
- * <a href="https://github.com/lightbend/config/issues/282" _target="blank">282</a>,
- * <a href="https://github.com/lightbend/config/issues/286" _target="blank">286</a>,
- * <a href="https://github.com/lightbend/config/issues/110" _target="blank">110</a>,
- * <a href="https://github.com/lightbend/config/issues/440" _target="blank">440</a> for historical discussion.
- * <p>
- * Java's {@link Optional} class serves as an elegant solution for handling optional properties in a fluent manner while
- * mitigating the concerns highlighted above.
- * <p>
- * API Example:
+ * For example:
  * 
  * <pre> 
  *       final int nthreads = conf.getOptionalInteger("nthreads")
@@ -89,6 +54,12 @@ import com.typesafe.config.ConfigValueType;
  *       
  *       System.out.println("number of threads: " + nthreads);
  * </pre>
+ * <p>
+ * <b>Please see</b> <a href="https://github.com/zleonov/optional-config" _target="blank">Optional Config on GitHub</a>
+ * and Optional Config's <a href="https://github.com/zleonov/optional-config/wiki">Wiki</a> for further discussion,
+ * details, API examples, and FAQ.</a>
+ * <p>
+ * <strong>Specifications:</strong>
  * <p>
  * The table below compares and contrasts this class to the {@link Config} class from Typesafe Config:
  * <p>
@@ -98,7 +69,8 @@ import com.typesafe.config.ConfigValueType;
  *      <th>Method</th><th>Property value</th><th>{@link Config} result</th><th>Strict mode</th><th>OptionalConfig result</th>
  *  </tr>
  *  <tr>
- *      <td rowspan="6">getXXXX</td><td>Valid value</td><td>Returns the property value</td><td>On/Off</td><td>Returns the property value</td>
+ *      <td rowspan=
+"6">getXXXX</td><td>Valid value</td><td>Returns the property value</td><td>On/Off</td><td>Returns the property value</td>
  *  </tr>
  *  <tr>
  *      <td>Null value</td><td>Exception</td><td>Off</td><td>Returns null</td>
@@ -116,7 +88,8 @@ import com.typesafe.config.ConfigValueType;
  *      <td>Missing value</td><td>Exception</td><td>On/Off</td><td>Exception</td>
  *  </tr>
  *  <tr>
- *      <td rowspan="8">getXXXXList</td><td>Valid list (no null values)</td><td>Returns the list of values</td><td>On/Off</td><td>Returns the list of values</td>
+ *      <td rowspan=
+"8">getXXXXList</td><td>Valid list (no null values)</td><td>Returns the list of values</td><td>On/Off</td><td>Returns the list of values</td>
  *  </tr>
  *  <tr>
  *      <td>Valid list (contains null values)</td><td>Exception</td><td>Off</td><td>Returns the list of values (including nulls)</td>
@@ -140,7 +113,8 @@ import com.typesafe.config.ConfigValueType;
  *      <td>Missing value</td><td>Exception</td><td>On/Off</td><td>Exception</td>
  *  </tr>
  *  <tr>
- *      <td rowspan="5">getOptionalXXXX</td><td>Valid value</td><td>N/A</td><td>On/Off</td><td>Returns an {@code Optional} containing the value</td>
+ *      <td rowspan=
+"5">getOptionalXXXX</td><td>Valid value</td><td>N/A</td><td>On/Off</td><td>Returns an {@code Optional} containing the value</td>
  *  </tr>
  *  <tr>
  *      <td>Null value</td><td>N/A</td><td>On/Off</td><td>Returns {@link Optional#empty()}</td>
@@ -155,7 +129,8 @@ import com.typesafe.config.ConfigValueType;
  *      <td>Missing value</td><td>N/A</td><td>On/Off</td><td>Exception</td>
  *  </tr>  
  *  <tr>
- *      <td rowspan="7">getOptionalXXXXList</td><td>Valid list (no null values)</td><td>N/A</td><td>On/Off</td><td>Returns an Optional containing the list of values</td>
+ *      <td rowspan=
+"7">getOptionalXXXXList</td><td>Valid list (no null values)</td><td>N/A</td><td>On/Off</td><td>Returns an Optional containing the list of values</td>
  *  </tr>
  *  <tr>
  *      <td>Valid list (contains null values)</td><td>N/A</td><td>Off</td><td>Returns an Optional containing the list of values (including nulls)</td>
@@ -189,7 +164,7 @@ import com.typesafe.config.ConfigValueType;
  *  </tr>
  *  <tr>
  *      <td>{@link #getShort(String)}</td><td rowspan=
-"4">Offering methods which operate on properties referencing Short values (for completeness).</td>
+"4">Offering methods which operate on properties referencing {@code Short} values (for completeness).<br />These methods behave similarly to their Integer and Long counterparts.</td>
  *  </tr>
  *  <tr>
  *      <td>{@link #getOptionalShort(String)}</td>
@@ -202,7 +177,7 @@ import com.typesafe.config.ConfigValueType;
  *  </tr>
  *  <tr>
  *      <td>{@link #getPath(String)}</td><td rowspan=
-"4">Offering methods which operate on properties referencing {@link Path} values.</td>
+"4">Offering methods which operate on properties referencing {@code Path} values.<br />A valid {@code java.nio.file.Path} may refer to an existing file or a directory or may not exist on the filesystem.</td>
  *  </tr>
  *  <tr>
  *      <td>{@link #getOptionalPath(String)}</td>
@@ -215,7 +190,7 @@ import com.typesafe.config.ConfigValueType;
  *  </tr>
  *  <tr>
  *      <td>{@link #getFile(String, LinkOption...)}</td><td rowspan=
-"4">Offering methods which operate on properties referencing {@link Files#isRegularFile(Path, LinkOption...) existing} file paths.</td>
+"4">Offering methods which operate on properties referencing {@code Path} values.<br />A valid {@code java.nio.file.Path} may refer to an existing file or a directory or may not exist on the filesystem.</td>
  *  </tr>
  *  <tr>
  *      <td>{@link #getOptionalFile(String, LinkOption...)}</td>
@@ -228,7 +203,7 @@ import com.typesafe.config.ConfigValueType;
  *  </tr>
  *  <tr>
  *      <td>{@link #getDirectory(String, LinkOption...)}</td><td rowspan=
-"4">Offering methods which operate on properties referencing {@link Files#isDirectory(Path, LinkOption...) existing} directories.</td>
+"4">Offering methods which operate on properties referencing existing directories.<br />These methods will throw exceptions if the referenced directories do not exist on the filesystem.</td>
  *  </tr>
  *  <tr>
  *      <td>{@link #getOptionalDirectory(String, LinkOption...)}</td>
