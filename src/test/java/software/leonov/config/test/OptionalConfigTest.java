@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -15,6 +14,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -27,6 +28,7 @@ class OptionalConfigTest {
 
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
+        System.out.println("Executing " + OptionalConfigTest.class.getSimpleName());
     }
 
     @AfterAll
@@ -34,13 +36,13 @@ class OptionalConfigTest {
     }
 
     @BeforeEach
-    void setUp(final TestInfo testInfo) throws Exception {
-        System.out.println(testInfo.getTestMethod().get().getName());
+    void setUp(final TestInfo info) throws Exception {
+        final String display = info.getDisplayName();
+        System.out.println("\n" + (display.startsWith("[") ? info.getTestMethod().get().getName() + "(): " + display : display));
     }
 
     @AfterEach
     void tearDown() throws Exception {
-        System.out.println();
     }
 
     static OptionalConfig createConfiguration(final String properties) {
@@ -53,26 +55,24 @@ class OptionalConfigTest {
 
     /*** Boolean ***/
 
-    @Test
-    void test_getBoolean() {
-        Stream.of("true", "yes").forEach(value -> {
-            final OptionalConfig conf = createConfiguration("prop = " + value);
+    @ParameterizedTest
+    @ValueSource(strings = { "true", "yes" })
+    void test_getBoolean_true(final String value) {
+        final OptionalConfig conf = createConfiguration("prop = " + value);
 
-            assertThat(conf.getBoolean("prop")).isTrue();
-            assertThat(conf.getConfig().getBoolean("prop")).isTrue();
-            assertThat(conf.getOptionalBoolean("prop")).hasValue(true);
-        });
+        assertThat(conf.getBoolean("prop")).isTrue();
+        assertThat(conf.getConfig().getBoolean("prop")).isTrue();
+        assertThat(conf.getOptionalBoolean("prop")).hasValue(true);
     }
 
-    @Test
-    void test_getBoolean_false() {
-        Stream.of("false", "no").forEach(value -> {
-            final OptionalConfig conf = createConfiguration("prop = " + value);
+    @ParameterizedTest
+    @ValueSource(strings = { "false", "no" })
+    void test_getBoolean_false(final String value) {
+        final OptionalConfig conf = createConfiguration("prop = " + value);
 
-            assertThat(conf.getBoolean("prop")).isFalse();
-            assertThat(conf.getConfig().getBoolean("prop")).isFalse();
-            assertThat(conf.getOptionalBoolean("prop")).hasValue(false);
-        });
+        assertThat(conf.getBoolean("prop")).isFalse();
+        assertThat(conf.getConfig().getBoolean("prop")).isFalse();
+        assertThat(conf.getOptionalBoolean("prop")).hasValue(false);
     }
 
     @Test
@@ -105,18 +105,17 @@ class OptionalConfigTest {
         assertThat(conf.getOptionalBoolean("prop")).isEmpty();
     }
 
-    @Test
-    void test_getBoolean_WrongType() {
-        Stream.of("prop {a = 1}", "prop = [a, b, c]", "prop = 1.5", "prop = abc").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop {a = 1}", "prop = [a, b, c]", "prop = 1.5", "prop = abc" })
+    void test_getBoolean_WrongType(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getBoolean("prop"));
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getBoolean("prop"));
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalBoolean("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getBoolean("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getBoolean("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalBoolean("prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     /*** Boolean List ***/
@@ -170,32 +169,30 @@ class OptionalConfigTest {
         assertThat(conf.getOptionalBooleanList("prop")).isEmpty();
     }
 
-    @Test
-    void test_getBooleanList_WrongType() {
-        Stream.of("prop = 5.3", "prop = a", "prop { abc = 1 }").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop = 5.3", "prop = a", "prop { abc = 1 }" })
+    void test_getBooleanList_WrongType(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getBooleanList("prop"));
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getBooleanList("prop"));
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalBooleanList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getBooleanList("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getBooleanList("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalBooleanList("prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
-    @Test
-    void test_getBooleanList_WrongType_element() {
-        Stream.of("prop = [true, false, 1.5]", "prop = [true, false, [true, false]]", "prop = [true, false, {a = false}]").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop = [true, false, 1.5]", "prop = [true, false, [true, false]]", "prop = [true, false, {a = false}]" })
+    void test_getBooleanList_WrongType_element(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getBooleanList("prop"));
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getBooleanList("prop"));
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalBooleanList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getBooleanList("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getBooleanList("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalBooleanList("prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     /*** Double ***/
@@ -248,18 +245,17 @@ class OptionalConfigTest {
         assertThat(conf.getOptionalDouble("prop")).hasValue(Double.NEGATIVE_INFINITY);
     }
 
-    @Test
-    void test_getDouble_WrongType() {
-        Stream.of("prop {a = 1}", "prop = [a, b, c]", "prop = abc", "prop = true").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop {a = 1}", "prop = [a, b, c]", "prop = abc", "prop = true" })
+    void test_getDouble_WrongType(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getDouble("prop"));
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getDouble("prop"));
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalDouble("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getDouble("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getDouble("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalDouble("prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     /*** Double List ***/
@@ -324,34 +320,32 @@ class OptionalConfigTest {
         assertThat(conf.getOptionalDoubleList("prop")).isEmpty();
     }
 
-    @Test
-    void test_getDoubleList_WrongType() {
-        Stream.of("prop = true", "prop = a", "prop { abc = 1 }").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop = true", "prop = a", "prop { abc = 1 }" })
+    void test_getDoubleList_WrongType(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getDoubleList("prop"));
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getDoubleList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getDoubleList("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getDoubleList("prop"));
 
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalDoubleList("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalDoubleList("prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
-    @Test
-    void test_getDoubleList_WrongType_element() {
-        Stream.of("prop = [true, false, abc]", "prop = [1.5, 2.3, [3.4, 4.89]]", "prop = [1.2, 2.3, {a = 3.4}]").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop = [true, false, abc]", "prop = [1.5, 2.3, [3.4, 4.89]]", "prop = [1.2, 2.3, {a = 3.4}]" })
+    void test_getDoubleList_WrongType_element(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getDoubleList("prop"));
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getDoubleList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getDoubleList("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getDoubleList("prop"));
 
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalDoubleList("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalDoubleList("prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     /*** Short ***/
@@ -407,19 +401,18 @@ class OptionalConfigTest {
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
     }
 
-    @Test
-    void test_getShort_WrongType() {
-        Stream.of("prop {a = 1}", "prop = [a, b, c]", "prop = abc", "prop = true").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop {a = 1}", "prop = [a, b, c]", "prop = abc", "prop = true" })
+    void test_getShort_WrongType(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getShort("prop"));
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getInt("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getShort("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getInt("prop"));
 
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalShort("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalShort("prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     /*** Short List ***/
@@ -484,33 +477,31 @@ class OptionalConfigTest {
         assertThat(conf.getOptionalShortList("prop")).isEmpty();
     }
 
-    @Test
-    void test_getShortList_WrongType() {
-        Stream.of("prop = 5.3", "prop = a", "prop { abc = 1 }").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop = 5.3", "prop = a", "prop { abc = 1 }" })
+    void test_getShortList_WrongType(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getShortList("prop"));
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getShortList("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("prop"));
 
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalShortList("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalShortList("prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
-    @Test
-    void test_getShortList_WrongType_element() {
-        Stream.of("prop = [true, false, abc]", "prop = [1, 2, [3, 4]]", "prop = [1, 2, {a = 3}]").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop = [true, false, abc]", "prop = [1, 2, [3, 4]]", "prop = [1, 2, {a = 3}]" })
+    void test_getShortList_WrongType_element(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getShortList("prop"));
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("prop"));
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalShortList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getShortList("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalShortList("prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     /*** Integer ***/
@@ -568,19 +559,18 @@ class OptionalConfigTest {
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
-    @Test
-    void test_getInteger_WrongType() {
-        Stream.of("prop {a = 1}", "prop = [a, b, c]", "prop = abc", "prop = true").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop {a = 1}", "prop = [a, b, c]", "prop = abc", "prop = true" })
+    void test_getInteger_WrongType(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getInteger("prop"));
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getInt("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getInteger("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getInt("prop"));
 
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalInteger("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalInteger("prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     /*** Integer List ***/
@@ -646,33 +636,31 @@ class OptionalConfigTest {
         assertThat(conf.getOptionalIntegerList("prop")).isEmpty();
     }
 
-    @Test
-    void test_getIntegerList_WrongType() {
-        Stream.of("prop = 5.3", "prop = a", "prop { abc = 1 }").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop = 5.3", "prop = a", "prop { abc = 1 }" })
+    void test_getIntegerList_WrongType(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getIntegerList("prop"));
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getIntegerList("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("prop"));
 
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalIntegerList("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalIntegerList("prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
-    @Test
-    void test_getIntegerList_WrongType_element() {
-        Stream.of("prop = [true, false, abc]", "prop = [1, 2, [3, 4]]", "prop = [1, 2, {a = 3}]").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop = [true, false, abc]", "prop = [1, 2, [3, 4]]", "prop = [1, 2, {a = 3}]" })
+    void test_getIntegerList_WrongType_element(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getIntegerList("prop"));
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("prop"));
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalIntegerList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getIntegerList("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalIntegerList("prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     /*** Long ***/
@@ -727,19 +715,18 @@ class OptionalConfigTest {
         assertThat(conf.getOptionalLong("prop")).hasValue(Long.MAX_VALUE);
     }
 
-    @Test
-    void test_getLong_WrongType() {
-        Stream.of("prop {a = 1}", "prop = [a, b, c]", "prop = abc", "prop = true").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop {a = 1}", "prop = [a, b, c]", "prop = abc", "prop = true" })
+    void test_getLong_WrongType(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getLong("prop"));
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getLong("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getLong("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getLong("prop"));
 
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalLong("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalLong("prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     /*** Long List ***/
@@ -804,34 +791,32 @@ class OptionalConfigTest {
         assertThat(conf.getOptionalLongList("prop")).isEmpty();
     }
 
-    @Test
-    void test_getLongList_WrongType() {
-        Stream.of("prop = 5.3", "prop = a", "prop { abc = 1 }").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop = 5.3", "prop = a", "prop { abc = 1 }" })
+    void test_getLongList_WrongType(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getLongList("prop"));
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getLongList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getLongList("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getLongList("prop"));
 
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalLongList("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalLongList("prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
-    @Test
-    void test_getLongList_WrongType_element() {
-        Stream.of("prop = [true, false, abc]", "prop = [1, 2, [3, 4]]", "prop = [1, 2, {a = 3}]").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop = [true, false, abc]", "prop = [1, 2, [3, 4]]", "prop = [1, 2, {a = 3}]" })
+    void test_getLongList_WrongType_element(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getLongList("prop"));
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getLongList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getLongList("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getLongList("prop"));
 
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalLongList("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalLongList("prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     /*** String ***/
@@ -876,19 +861,18 @@ class OptionalConfigTest {
         assertThat(conf.getOptionalString("prop")).isEmpty();
     }
 
-    @Test
-    void test_getString_WrongType() {
-        Stream.of("prop {a = 1}", "prop = [a, b, c]").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop {a = 1}", "prop = [a, b, c]" })
+    void test_getString_WrongType(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getString("prop"));
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getString("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getString("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getString("prop"));
 
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalString("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalString("prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     /*** String List ***/
@@ -942,34 +926,32 @@ class OptionalConfigTest {
         assertThat(conf.getOptionalStringList("prop")).isEmpty();
     }
 
-    @Test
-    void test_getStringList_WrongType() {
-        Stream.of("prop = 5.3", "prop = a", "prop { abc = 1 }").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop = 5.3", "prop = a", "prop { abc = 1 }" })
+    void test_getStringList_WrongType(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getStringList("prop"));
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getStringList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getStringList("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getStringList("prop"));
 
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalStringList("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalStringList("prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
-    @Test
-    void test_getStringList_WrongType_element() {
-        Stream.of("prop = [a, b, [1, 2]]", "prop = [a, b, {a = b}]").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop = [a, b, [1, 2]]", "prop = [a, b, {a = b}]" })
+    void test_getStringList_WrongType_element(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getStringList("prop"));
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getStringList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getStringList("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getStringList("prop"));
 
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalStringList("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalStringList("prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     /*** Enum ***/
@@ -999,35 +981,33 @@ class OptionalConfigTest {
         assertThat(conf.getOptionalEnum(Day.class, "path")).isEmpty();
     }
 
-    @Test
-    void test_getEnum_WrongType() {
-        Stream.of("prop {day = SUNDAY}", "prop = [SUNDAY, MONDAY]").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop {day = SUNDAY}", "prop = [SUNDAY, MONDAY]" })
+    void test_getEnum_WrongType(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getEnum(Day.class, "prop"));
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getEnum(Day.class, "prop"));
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalEnum(Day.class, "prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getEnum(Day.class, "prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getEnum(Day.class, "prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalEnum(Day.class, "prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     /*
      * We may want to file a bug because Enums are treated differently. Other entities always throw WrongType
      */
-    @Test
-    void test_getEnum_BadValue() {
-        Stream.of("prop = 1.5", "prop = true", "prop = ABC").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop = 1.5", "prop = true", "prop = ABC" })
+    void test_getEnum_BadValue(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.BadValue.class, () -> conf.getEnum(Day.class, "prop"));
-            final Exception e2 = assertThrows(ConfigException.BadValue.class, () -> conf.getConfig().getEnum(Day.class, "prop"));
-            final Exception e3 = assertThrows(ConfigException.BadValue.class, () -> conf.getOptionalEnum(Day.class, "prop"));
+        final Exception e1 = assertThrows(ConfigException.BadValue.class, () -> conf.getEnum(Day.class, "prop"));
+        final Exception e2 = assertThrows(ConfigException.BadValue.class, () -> conf.getConfig().getEnum(Day.class, "prop"));
+        final Exception e3 = assertThrows(ConfigException.BadValue.class, () -> conf.getOptionalEnum(Day.class, "prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     @Test
@@ -1062,19 +1042,18 @@ class OptionalConfigTest {
         assertThat(conf.getConfig().getEnumList(Day.class, "prop")).containsExactlyElementsIn(expected);
     }
 
-    @Test
-    void test_getEnumSet_WrongType() {
-        Stream.of("prop = 5.3", "prop = a", "prop { abc = 1 }").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop = 5.3", "prop = a", "prop { abc = 1 }" })
+    void test_getEnumSet_WrongType(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getEnumSet(Day.class, "prop"));
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getEnumList(Day.class, "prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getEnumSet(Day.class, "prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getEnumList(Day.class, "prop"));
 
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalEnumSet(Day.class, "prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalEnumSet(Day.class, "prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     @Test
@@ -1096,34 +1075,32 @@ class OptionalConfigTest {
         assertThat(conf.getOptionalEnumSet(Day.class, "prop")).isEmpty();
     }
 
-    @Test
-    void test_getEnumSet_BadValue_element() {
-        Stream.of("prop = [SUNDAY, MONDAY, true]").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop = [SUNDAY, MONDAY, true]" })
+    void test_getEnumSet_BadValue_element(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.BadValue.class, () -> conf.getEnumSet(Day.class, "prop"));
-            final Exception e3 = assertThrows(ConfigException.BadValue.class, () -> conf.getConfig().getEnumList(Day.class, "prop"));
+        final Exception e1 = assertThrows(ConfigException.BadValue.class, () -> conf.getEnumSet(Day.class, "prop"));
+        final Exception e3 = assertThrows(ConfigException.BadValue.class, () -> conf.getConfig().getEnumList(Day.class, "prop"));
 
-            final Exception e2 = assertThrows(ConfigException.BadValue.class, () -> conf.getOptionalEnumSet(Day.class, "prop"));
+        final Exception e2 = assertThrows(ConfigException.BadValue.class, () -> conf.getOptionalEnumSet(Day.class, "prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
-    @Test
-    void test_getEnumSet_WrongType_element() {
-        Stream.of("prop = [SUNDAY, MONDAY, [SUNDAY, MONDAY]]", "prop = [SUNDAY, MONDAY, {a = SUNDAY}]").forEach(configuration -> {
-            final OptionalConfig conf = createConfiguration(configuration);
+    @ParameterizedTest
+    @ValueSource(strings = { "prop = [SUNDAY, MONDAY, [SUNDAY, MONDAY]]", "prop = [SUNDAY, MONDAY, {a = SUNDAY}]" })
+    void test_getEnumSet_WrongType_element(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
 
-            final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getEnumSet(Day.class, "prop"));
-            final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getEnumList(Day.class, "prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getEnumSet(Day.class, "prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getEnumList(Day.class, "prop"));
 
-            final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalEnumSet(Day.class, "prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalEnumSet(Day.class, "prop"));
 
-            assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-            assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
-        });
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     @Test
