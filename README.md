@@ -8,7 +8,7 @@ Typesafe Config is one of the more popular configuration libraries for JVM langu
 
 This project is a companion to Typesafe Config, allowing users a more convenient way to handle optional properties and providing a number of additional enhancements.
 
-**Please refer to the [Wiki](https://github.com/zleonov/optional-config/wiki) for details, examples, and FAQs.**
+**Please refer to the [Wiki](https://github.com/zleonov/optional-config/wiki) for details, API examples, and FAQ.**
 
 Goals
 =====
@@ -18,6 +18,10 @@ Goals
 - Raise identical exceptions as Typesafe Config.
 - No dependencies (other than Typesafe Config).
 - Java 8 compatible.
+
+Documentation
+=============
+The latest API documentation can be accessed [here](https://zleonov.github.io/optional-config/latest/apidocs).
 
 But if you want something else?
 ===============================
