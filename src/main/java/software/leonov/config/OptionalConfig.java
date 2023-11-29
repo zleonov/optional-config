@@ -50,10 +50,10 @@ import com.typesafe.config.ConfigValueType;
  * For example:
  * 
  * <pre> 
- *       final int nthreads = conf.getOptionalInteger("nthreads")
- *                                .orElse(Runtime.getRuntime().availableProcessors());
+ * final int nthreads = conf.getOptionalInteger("nthreads")
+ *                          .orElse(Runtime.getRuntime().availableProcessors());
  *       
- *       System.out.println("number of threads: " + nthreads);
+ * System.out.println("number of threads: " + nthreads);
  * </pre>
  * <p>
  * <b>Please see</b> <a href="https://github.com/zleonov/optional-config" _target="blank">Optional Config on GitHub</a>

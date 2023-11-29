@@ -24,4 +24,5 @@ buildNumber.properties
 ### Project ###
 ###############
 /temp/
+/apidocs/
 TODO
