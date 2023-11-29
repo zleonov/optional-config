@@ -34,7 +34,6 @@ public final class ConfigValues {
 
     public static <T> T getValue(final boolean strictMode, final Config config, final String path, final ConfigValueType expected, final Function<ConfigValue, T> valueTransformer) {
         final Path p = Path.newPath(path);
-//        return (T) valueTransformer.apply(transform(strictMode, path, getValue(((SimpleConfig) config).toFallbackValue(), p, p), expected));
         return (T) valueTransformer.apply(transform(strictMode, path, getValue(((SimpleConfig) config).toFallbackValue(), p, p), expected));
     }
 
@@ -126,10 +125,10 @@ public final class ConfigValues {
             throw ConfigImpl.improveNotResolved(path, e);
         }
     }
-    
+
     private static AbstractConfigValue getValue(final AbstractConfigObject object, final String key, final Path original) {
         final AbstractConfigValue value = object.peekAssumingResolved(key, original);
-        
+
         if (value == null)
             throw new ConfigException.Missing(object.origin(), original.render());
         else
