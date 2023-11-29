@@ -28,5 +28,5 @@ But if you want something else?
 - [SmallRye Config](https://github.com/smallrye/smallrye-config) - SmallRye Config is a library that provides a way to configure applications, frameworks and containers.
 - [Configur8](http://dentondav.id/configur8) - Nano-library which provides the ability to define typesafe (!) Configuration templates for applications.
 - [KAConf](https://github.com/mariomac/kaconf) - KickAss Configuration. An annotation-based configuration system for Java and Kotlin.
-- [dotenv](https://github.com/shyiko/dotenv) - A twelve-factor configuration (12factor.net/config) library for Java 8+
-- [ini4j](https://ini4j.sourceforge.net) - The [ini4j] is a simple Java API for handling configuration files in Windows .ini format.
+- [dotenv](https://github.com/shyiko/dotenv) - A twelve-factor configuration (12factor.net/config) library for Java 8+.
+- [ini4j](https://ini4j.sourceforge.net) - A simple Java API for handling configuration files in Windows .ini format.
