@@ -34,7 +34,8 @@ import com.typesafe.config.ConfigValueType;
 
 /**
  * This class offers users a better way to handle <i>optional</i> properties in the configuration library
- * <a href="https://github.com/lightbend/config" target="_blank">Typesafe Config</a>. It is a companion to the Typesafe Config's {@link Config} class.
+ * <a href="https://github.com/lightbend/config" target="_blank">Typesafe Config</a>. It is a companion to the Typesafe
+ * Config's {@link Config} class.
  * <p>
  * An instance of {@link OptionalConfig} is immutable and thread-safe. It can be constructed by passing a {@link Config}
  * object to the {@link #from(Config)} method. The {@link #setStrictMode(boolean)} determines how this class treats
