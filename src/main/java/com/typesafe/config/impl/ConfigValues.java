@@ -33,44 +33,9 @@ public final class ConfigValues {
     }
 
     public static <T> T getValue(final boolean strictMode, final Config config, final String path, final ConfigValueType expected, final Function<ConfigValue, T> valueTransformer) {
-        final Path p = new Path(path);
+        final Path p = Path.newPath(path);
+//        return (T) valueTransformer.apply(transform(strictMode, path, getValue(((SimpleConfig) config).toFallbackValue(), p, p), expected));
         return (T) valueTransformer.apply(transform(strictMode, path, getValue(((SimpleConfig) config).toFallbackValue(), p, p), expected));
-    }
-
-    private static AbstractConfigValue getValue(final AbstractConfigObject object, final Path path, final Path original) {
-        try {
-            final String key  = path.first();
-            final Path   next = path.remainder();
-            if (next == null) {
-                return getValue(object, key, original);
-            } else {
-                final AbstractConfigObject o = (AbstractConfigObject) getValue(object, key, original.subPath(0, original.length() - next.length()));
-                return getValue(o, next, original);
-            }
-        } catch (final ConfigException.NotResolved e) {
-            throw ConfigImpl.improveNotResolved(path, e);
-        }
-    }
-
-    private static AbstractConfigValue getValue(final AbstractConfigObject object, final String key, final Path original) {
-        final AbstractConfigValue value = object.peekAssumingResolved(key, original);
-
-        if (value == null)
-            throw new ConfigException.Missing(object.origin(), original.render());
-
-        return value;
-    }
-
-    private static ConfigValue transform(final boolean strictMode, final String path, final ConfigValue from, final ConfigValueType to) {
-        final ConfigValue value = from.valueType() == to ? from : DefaultTransformer.transform((AbstractConfigValue) from, to);
-
-        if (strictMode && value.valueType() == ConfigValueType.NULL)
-            throw new ConfigException.Null(value.origin(), path, to.name());
-
-        if (value.valueType() != ConfigValueType.NULL && value.valueType() != to)
-            throw new ConfigException.WrongType(value.origin(), path, to.name(), value.valueType().name());
-
-        return value;
     }
 
     public static ConfigValue transformElement(final boolean strictMode, final String path, final ConfigValue from, final ConfigValueType to) {
@@ -145,6 +110,42 @@ public final class ConfigValues {
             return directory;
 
         throw new ConfigException.BadValue(value.origin(), path, directory + " is not a directory or does not exist");
+    }
+
+    private static AbstractConfigValue getValue(final AbstractConfigObject object, final Path path, final Path original) {
+        try {
+            final String key  = path.first();
+            final Path   next = path.remainder();
+            if (next == null)
+                return getValue(object, key, original);
+            else {
+                final AbstractConfigObject o = (AbstractConfigObject) getValue(object, key, original.subPath(0, original.length() - next.length()));
+                return getValue(o, next, original);
+            }
+        } catch (ConfigException.NotResolved e) {
+            throw ConfigImpl.improveNotResolved(path, e);
+        }
+    }
+    
+    private static AbstractConfigValue getValue(final AbstractConfigObject object, final String key, final Path original) {
+        final AbstractConfigValue value = object.peekAssumingResolved(key, original);
+        
+        if (value == null)
+            throw new ConfigException.Missing(object.origin(), original.render());
+        else
+            return value;
+    }
+
+    private static ConfigValue transform(final boolean strictMode, final String path, final ConfigValue from, final ConfigValueType to) {
+        final ConfigValue value = from.valueType() == to ? from : DefaultTransformer.transform((AbstractConfigValue) from, to);
+
+        if (strictMode && value.valueType() == ConfigValueType.NULL)
+            throw new ConfigException.Null(value.origin(), path, to.name());
+
+        if (value.valueType() != ConfigValueType.NULL && value.valueType() != to)
+            throw new ConfigException.WrongType(value.origin(), path, to.name(), value.valueType().name());
+
+        return value;
     }
 
 }

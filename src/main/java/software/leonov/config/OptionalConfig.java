@@ -43,8 +43,8 @@ import com.typesafe.config.ConfigValueType;
  * <p>
  * <strong>Discusson:</strong>
  * <p>
- * Typesafe Config is one of the more popular configuration libraries for JVM languages. The
- * authors of Typesafe Config take an opinionated view on the handling of
+ * Typesafe Config is one of the more popular configuration libraries for JVM languages. The authors of Typesafe Config
+ * take an opinionated view on the handling of
  * <a href="https://github.com/lightbend/config#how-to-handle-defaults" _target="blank">default properties</a>:
  * 
  * <pre><i>
@@ -95,91 +95,85 @@ import com.typesafe.config.ConfigValueType;
  * <pre>
  * <table border="1" cellpadding="5" cellspacing="1">
  *  <tr>
- *      <th>Method</th><th>Property</th><th>{@link Config} result</th><th>Strict mode</th><th>OptionalConfig result</th>
+ *      <th>Method</th><th>Property value</th><th>{@link Config} result</th><th>Strict mode</th><th>OptionalConfig result</th>
  *  </tr>
  *  <tr>
- *      <td rowspan=
-"6">getXXXX</td><td>Valid value</td><td>Returns the property value</td><td>On/Off</td><td>Returns the property value</td>
+ *      <td rowspan="6">getXXXX</td><td>Valid value</td><td>Returns the property value</td><td>On/Off</td><td>Returns the property value</td>
  *  </tr>
  *  <tr>
- *      <td rowspan="2">Null value</td><td rowspan="5">Exception</td><td>Off</td><td>Returns null</td>
+ *      <td>Null value</td><td>Exception</td><td>Off</td><td>Returns null</td>
  *  </tr>
  *  <tr>
- *      <td>On</td><td rowspan="4">Exception</td>
+ *      <td>Null value</td><td>Exception</td><td>On</td><td>Exception</td>
  *  </tr>
  *  <tr>
- *      <td>Invalid value</td><td rowspan="4">On/Off</td>
+ *      <td>Invalid value</td><td>Exception</td><td>On/Off</td><td>Exception</td>
  *  </tr>
  *  <tr>
- *      <td>Missing property</td>
+ *      <td>Missing property</td><td>Exception</td><td>On/Off</td><td>Exception</td>
  *  </tr>
  *  <tr>
- *      <td>Missing value</td>
+ *      <td>Missing value</td><td>Exception</td><td>On/Off</td><td>Exception</td>
  *  </tr>
  *  <tr>
- *      <td rowspan=
-"8">getXXXXList</td><td>Valid list (no null values)</td><td>Returns the list of values</td><td>Returns the list of values</td>
+ *      <td rowspan="8">getXXXXList</td><td>Valid list (no null values)</td><td>Returns the list of values</td><td>On/Off</td><td>Returns the list of values</td>
  *  </tr>
  *  <tr>
- *      <td>Valid list (contains null values)</td><td rowspan="7">Exception</td><td rowspan=
-"2">Off</td><td>Returns the list of values (including nulls)</td>
+ *      <td>Valid list (contains null values)</td><td>Exception</td><td>Off</td><td>Returns the list of values (including nulls)</td>
  *  </tr>
  *  <tr>
- *      <td>Null list</td><td>Returns null</td>
+ *      <td>Valid list (contains null values)</td><td>Exception</td><td>On</td><td>Exception</td>
  *  </tr>
  *  <tr>
- *      <td>Valid list (contains null values)</td><td rowspan="2">On</td><td rowspan="5">Exception</td>
+ *      <td>Null list</td><td>Exception</td><td>Off</td><td>Returns null</td>
  *  </tr>
  *  <tr>
- *      <td>Null list</td>
+ *      <td>Null list</td><td>Exception</td><td>On</td><td>Exception</td>
  *  </tr>
  *  <tr>
- *      <td>Invalid list</td><td rowspan="11">On/Off</td>
+ *      <td>Invalid list</td><td>Exception</td><td>On/Off</td><td>Exception</td>
  *  </tr>
  *  <tr>
- *      <td>Missing property</td>
+ *      <td>Missing property</td><td>Exception</td><td>On/Off</td><td>Exception</td>
  *  </tr>
  *  <tr>
- *      <td>Missing value</td>
+ *      <td>Missing value</td><td>Exception</td><td>On/Off</td><td>Exception</td>
  *  </tr>
  *  <tr>
- *      <td rowspan="5">getOptionalXXXX</td><td>Valid value</td><td rowspan=
-"12">N/A</td><td>Returns an {@code Optional} containing the value</td>
+ *      <td rowspan="5">getOptionalXXXX</td><td>Valid value</td><td>N/A</td><td>On/Off</td><td>Returns an {@code Optional} containing the value</td>
  *  </tr>
  *  <tr>
- *      <td>Null value</td><td rowspan="2">Returns {@link Optional#empty()}</td>
+ *      <td>Null value</td><td>N/A</td><td>On/Off</td><td>Returns {@link Optional#empty()}</td>
  *  </tr>
  *  <tr>
- *      <td>Missing property</td>
+ *      <td>Missing property</td><td>N/A</td><td>On/Off</td><td>Returns {@link Optional#empty()}</td>
  *  </tr>
  *  <tr>
- *      <td>Invalid value</td><td rowspan="2">Exception</td>
+ *      <td>Invalid value</td><td>N/A</td><td>On/Off</td><td>Exception</td>
  *  </tr>
  *  <tr>
- *      <td>Missing value</td>
+ *      <td>Missing value</td><td>N/A</td><td>On/Off</td><td>Exception</td>
  *  </tr>  
  *  <tr>
- *      <td rowspan=
-"7">getOptionalXXXXList</td><td>Valid list (no null values)</td><td>Returns an Optional containing the list of values</td>
+ *      <td rowspan="7">getOptionalXXXXList</td><td>Valid list (no null values)</td><td>N/A</td><td>On/Off</td><td>Returns an Optional containing the list of values</td>
  *  </tr>
  *  <tr>
- *      <td>Null list</td><td rowspan="2">Returns {@link Optional#empty()}</td>
+ *      <td>Valid list (contains null values)</td><td>N/A</td><td>Off</td><td>Returns an Optional containing the list of values (including nulls)</td>
  *  </tr>
  *  <tr>
- *      <td>Missing property</td>
+ *      <td>Valid list (contains null values)</td><td>N/A</td><td>On</td><td>Exception</td>
  *  </tr>
  *  <tr>
- *      <td rowspan=
-"2">Valid list (contains null values)</td><td>Off</td><td>Returns an Optional containing the list of values (including nulls)</td>
+ *      <td>Null list</td><td>N/A</td><td>On/Off</td><td>Returns {@link Optional#empty()}</td>
  *  </tr>
  *  <tr>
- *      <td>On</td><td rowspan="3">Exception</td>
+ *      <td>Missing property</td><td>N/A</td><td>On/Off</td><td>Returns {@link Optional#empty()}</td>
  *  </tr>
  *  <tr>
- *      <td>Invalid list</td><td rowspan="2">On/Off</td>
+ *      <td>Invalid list</td><td>N/A</td><td>On/Off</td><td>Exception</td>
  *  </tr>
  *  <tr>
- *      <td>Missing value</td>
+ *      <td>Missing value</td><td>N/A</td><td>On/Off</td><td>Exception</td>
  *  </tr>
  * </table>
  * </pre>
@@ -220,17 +214,17 @@ import com.typesafe.config.ConfigValueType;
  *      <td>{@link #getOptionalPathList(String)}</td>
  *  </tr>
  *  <tr>
- *      <td>{@link #getRegularFile(String, LinkOption...)}</td><td rowspan=
+ *      <td>{@link #getFile(String, LinkOption...)}</td><td rowspan=
 "4">Offering methods which operate on properties referencing {@link Files#isRegularFile(Path, LinkOption...) existing} file paths.</td>
  *  </tr>
  *  <tr>
- *      <td>{@link #getOptionalRegularFile(String, LinkOption...)}</td>
+ *      <td>{@link #getOptionalFile(String, LinkOption...)}</td>
  *  </tr>
  *  <tr>
- *      <td>{@link #getRegularFileList(String, LinkOption...)}</td>
+ *      <td>{@link #getFileList(String, LinkOption...)}</td>
  *  </tr>
  *  <tr>
- *      <td>{@link #getOptionalRegularFileList(String, LinkOption...)}</td>
+ *      <td>{@link #getOptionalFileList(String, LinkOption...)}</td>
  *  </tr>
  *  <tr>
  *      <td>{@link #getDirectory(String, LinkOption...)}</td><td rowspan=
@@ -823,7 +817,7 @@ public final class OptionalConfig {
      * @throws com.typesafe.config.ConfigException.WrongType if the property value cannot otherwise be converted to a
      *                                                       {@code Path}
      */
-    public Path getRegularFile(final String path, final LinkOption... options) {
+    public Path getFile(final String path, final LinkOption... options) {
         requireNonNull(path, "path == null");
         requireNonNull(options, "options == null");
         return get(STRING, path, value -> toRegularFile(value, path, options));
@@ -848,7 +842,7 @@ public final class OptionalConfig {
      * @throws com.typesafe.config.ConfigException.WrongType if the property value cannot otherwise be converted to a
      *                                                       {@code Path}
      */
-    public Optional<Path> getOptionalRegularFile(final String path, final LinkOption... options) {
+    public Optional<Path> getOptionalFile(final String path, final LinkOption... options) {
         requireNonNull(path, "path == null");
         requireNonNull(options, "options == null");
         return getOptional(STRING, path, value -> toRegularFile(value, path, options));
@@ -972,7 +966,7 @@ public final class OptionalConfig {
      * @throws com.typesafe.config.ConfigException.WrongType if the property value cannot otherwise be converted to a
      *                                                       {@code List} of {@code Path}s
      */
-    public List<Path> getRegularFileList(final String path, final LinkOption... options) {
+    public List<Path> getFileList(final String path, final LinkOption... options) {
         requireNonNull(path, "path == null");
         requireNonNull(options, "options == null");
         return getList(STRING, path, value -> toRegularFile(value, path, options));
@@ -997,7 +991,7 @@ public final class OptionalConfig {
      * @throws com.typesafe.config.ConfigException.WrongType if the property value cannot otherwise be converted to a
      *                                                       {@code List} of {@code Path}s
      */
-    public Optional<List<Path>> getOptionalRegularFileList(final String path, final LinkOption... options) {
+    public Optional<List<Path>> getOptionalFileList(final String path, final LinkOption... options) {
         requireNonNull(path, "path == null");
         requireNonNull(options, "options == null");
         return Optional.ofNullable(getNullableList(STRING, path, value -> toRegularFile(value, path, options)));
@@ -1175,7 +1169,7 @@ public final class OptionalConfig {
     }
 
     private <T> Optional<T> getOptional(final ConfigValueType valueType, final String path, final Function<ConfigValue, T> valueTransformer) {
-        return Optional.ofNullable(missingOrIsNull(path) ? null : getValue(false, config, path, valueType, valueTransformer));
+        return Optional.ofNullable(isMissingOrNull(path) ? null : getValue(false, config, path, valueType, valueTransformer));
     }
 
     @SuppressWarnings("unchecked")
@@ -1196,8 +1190,8 @@ public final class OptionalConfig {
         return (List<T>) getList(true, valueType, path, valueTransformer);
     }
 
-    private <T> List<T> getList(final boolean optional, final ConfigValueType valueType, final String path, final Function<ConfigValue, T> valueTransformer) {
-        final Stream<ConfigValue> values = optional && missingOrIsNull(path) ? null : getConfigValues(path, valueType);
+    private <T> List<T> getList(final boolean propertyIsOptional, final ConfigValueType valueType, final String path, final Function<ConfigValue, T> valueTransformer) {
+        final Stream<ConfigValue> values = propertyIsOptional && isMissingOrNull(path) ? null : getConfigValues(path, valueType);
         return values == null ? null : values.<T>map(valueTransformer).collect(toList());
     }
 
@@ -1211,7 +1205,7 @@ public final class OptionalConfig {
             return false;
     }
 
-    private boolean missingOrIsNull(final String path) {
+    private boolean isMissingOrNull(final String path) {
         return !config.hasPathOrNull(path) || config.getIsNull(path);
     }
 
