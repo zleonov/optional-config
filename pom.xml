@@ -82,7 +82,7 @@
                 <version>${maven-javadoc-plugin.version}</version>
 
                 <configuration>
-                    <reportOutputDirectory>${project.basedir}/apidocs</reportOutputDirectory>
+                    <reportOutputDirectory>${project.basedir}/docs/apidocs</reportOutputDirectory>
                     <destDir>latest</destDir>
                     <sourcepath>${project.build.sourceDirectory}:${java.sourceDirectory}</sourcepath>
                     <subpackages>software.leonov</subpackages>
