@@ -21,7 +21,7 @@ Goals
 
 Documentation
 =============
-The latest API documentation can be accessed [here](https://zleonov.github.io/optional-config/latest/apidocs).
+The latest API documentation can be accessed [here](https://zleonov.github.io/optional-config/apidocs/latest).
 
 But if you want something else?
 ===============================
