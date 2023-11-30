@@ -56,8 +56,8 @@ import com.typesafe.config.ConfigValueType;
  * System.out.println("number of threads: " + nthreads);
  * </pre>
  * <p>
- * <b>Please see</b> <a href="https://github.com/zleonov/optional-config" _target="blank">Optional Config on GitHub</a>
- * and Optional Config's <a href="https://github.com/zleonov/optional-config/wiki" _target="blank">Wiki</a> for further
+ * <b>Please see</b> <a href="https://github.com/zleonov/optional-config" target="_blank">Optional Config on GitHub</a>
+ * and Optional Config's <a href="https://github.com/zleonov/optional-config/wiki" target="_blank">Wiki</a> for further
  * discussion, details, API examples, and FAQ.</a>
  * <p>
  * <strong>Specifications:</strong>
