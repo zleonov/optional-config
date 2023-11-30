@@ -153,6 +153,7 @@ import com.typesafe.config.ConfigValueType;
  *  </tr>
  * </table>
  * </pre>
+ * Note that the {@code Config.getEnumList} method is re-implemented as {@code OptionalConfig.getEnumSet} method.
  * <p>
  * <strong>Additional functionality:</strong>
  * <p>
