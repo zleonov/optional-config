@@ -41,7 +41,7 @@ import com.typesafe.config.ConfigValueType;
  * object to the {@link #from(Config)} method. The {@link #setStrictMode(boolean)} determines how this class treats
  * properties with {@code null} values.
  * <p>
- * <strong>Overview:</strong>
+ * <strong>Overview</strong>
  * <p>
  * Typesafe Config is one of the more popular configuration libraries for JVM languages. Unfortunately it doesn't offer
  * a practical way to handle optional properties. This project is aims to elevate optional properties to a first-class
@@ -60,7 +60,7 @@ import com.typesafe.config.ConfigValueType;
  * and Optional Config's <a href="https://github.com/zleonov/optional-config/wiki" target="_blank">Wiki</a> for further
  * discussion, details, API examples, and FAQ.</a>
  * <p>
- * <strong>Specifications:</strong>
+ * <strong>Specifications</strong>
  * <p>
  * The table below compares and contrasts this class to the {@link Config} class from Typesafe Config:
  * <p>
