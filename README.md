@@ -1,6 +1,6 @@
 Optional Config
 ===============
-Offering native support for optional properties for [Typesafe Config](https://github.com/lightbend/config).
+Offering native support for optional properties with [Typesafe Config](https://github.com/lightbend/config).
 
 Overview
 ========
