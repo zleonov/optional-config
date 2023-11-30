@@ -57,8 +57,8 @@ import com.typesafe.config.ConfigValueType;
  * </pre>
  * <p>
  * <b>Please see</b> <a href="https://github.com/zleonov/optional-config" _target="blank">Optional Config on GitHub</a>
- * and Optional Config's <a href="https://github.com/zleonov/optional-config/wiki">Wiki</a> for further discussion,
- * details, API examples, and FAQ.</a>
+ * and Optional Config's <a href="https://github.com/zleonov/optional-config/wiki" _target="blank">Wiki</a> for further
+ * discussion, details, API examples, and FAQ.</a>
  * <p>
  * <strong>Specifications:</strong>
  * <p>
