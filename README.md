@@ -3,15 +3,24 @@ Optional Config
 Offering native support for optional properties with [Typesafe Config](https://github.com/lightbend/config).
 
 Overview
-========
+--------
 Typesafe Config is one of the more popular configuration libraries for JVM languages. Unfortunately it doesn't offer an elegant way to handle _optional_ properties.
 
 This project is a companion to Typesafe Config, allowing users a more convenient way to handle optional properties and providing a number of additional enhancements.
 
 **Please refer to the [Wiki](https://github.com/zleonov/optional-config/wiki) for details, API examples, and FAQ.**
 
+Do yourself a favor and start configuring your projects like this:
+
+```java
+final int nthreads = conf.getOptionalInteger("nthreads")
+                         .orElse(Runtime.getRuntime().availableProcessors());
+      
+final ExecutorService exec = Executors.newFixedThreadPool(nthreads);
+```
+
 Goals
-=====
+-----
 - Create `getOptionalXXXX` and `getOptionalXXXXList` methods analogous to their `getXXXX` and `getXXXXList` counterparts.
 - Handle missing properties.
 - Handle `null` values (including in lists).
@@ -20,11 +29,11 @@ Goals
 - Java 8 compatible.
 
 Documentation
-=============
+-------------
 The latest API documentation can be accessed [here](https://zleonov.github.io/optional-config/apidocs/latest).
 
 But if you want something else?
-===============================
+-------------------------------
 - [cfg4j](https://github.com/cfg4j/cfg4j) - cfg4j ("configuration for Java") is a configuration library for Java distributed apps (and more).
 - [externalized-properties](https://github.com/joel-jeremy/externalized-properties) - A lightweight and extensible library to resolve application properties from various external sources.
 - [gestalt](https://github.com/gestalt-config/gestalt) - Gestalt is a powerful Java configuration library designed to simplify the way you handle and manage configurations in your software projects.
