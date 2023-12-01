@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":9,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10};
+var methods = {"i0":10,"i1":9,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -108,7 +108,7 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <hr>
 <br>
-<pre>public final class <a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.237">OptionalConfig</a>
+<pre>public final class <a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.240">OptionalConfig</a>
 extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></pre>
 <div class="block">This class offers users a better way to handle <i>optional</i> properties in the configuration library
  <a href="https://github.com/lightbend/config" target="_blank">Typesafe Config</a>. It is a companion to the Typesafe
@@ -130,7 +130,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
  final int nthreads = conf.getOptionalInteger("nthreads")
                           .orElse(Runtime.getRuntime().availableProcessors());
        
- System.out.println("number of threads: " + nthreads);
+ final ExecutorService exec = Executors.newFixedThreadPool(nthreads);
  </pre>
  <p>
  <b>Please see</b> <a href="https://github.com/zleonov/optional-config" target="_blank">Optional Config on GitHub</a>
@@ -290,7 +290,10 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
   </tr>
   <tr>
       <td><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalDirectoryList-java.lang.String-java.nio.file.LinkOption...-"><code>getOptionalDirectoryList(String, LinkOption...)</code></a></td>
-  </tr>  
+  </tr>
+  <tr>
+      <td><a href="../../../software/leonov/config/OptionalConfig.html#at-java.lang.String-"><code>at(String)</code></a></td><td>Offering the capability to get nested configuration objects as a standalone <code> OptionalConfig</code>.</td>
+  </tr>
  </table>
  </pre></div>
 <dl>
@@ -316,32 +319,38 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code><a href="../../../software/leonov/config/OptionalConfig.html" title="class in software.leonov.config">OptionalConfig</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#at-java.lang.String-">at</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
+<div class="block">Returns an <code>OptionalConfig</code> representing the nested configuration object at the specified path expression.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>static <a href="../../../software/leonov/config/OptionalConfig.html" title="class in software.leonov.config">OptionalConfig</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#from-com.typesafe.config.Config-">from</a></span>(<a href="https://javadoc.io/doc/com.typesafe/config/1.4.3/com/typesafe/config/Config.html?is-external=true" title="class or interface in com.typesafe.config">Config</a>&nbsp;config)</code>
 <div class="block">Creates a new <a href="../../../software/leonov/config/OptionalConfig.html" title="class in software.leonov.config"><code>OptionalConfig</code></a> from the underlying <a href="https://javadoc.io/doc/com.typesafe/config/1.4.3/com/typesafe/config/Config.html?is-external=true" title="class or interface in com.typesafe.config"><code>Config</code></a> object.</div>
 </td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getBoolean-java.lang.String-">getBoolean</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>Boolean</code> value for the property at the given <code>path</code> expression or <code>null</code> if the property
  is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getBooleanList-java.lang.String-">getBooleanList</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>List</code> of <code>Boolean</code> values for the property at the given <code>path</code> expression or
  <code>null</code> if the property is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="https://javadoc.io/doc/com.typesafe/config/1.4.3/com/typesafe/config/Config.html?is-external=true" title="class or interface in com.typesafe.config">Config</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getConfig--">getConfig</a></span>()</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getDelegate--">getDelegate</a></span>()</code>
 <div class="block">Returns the original <a href="https://javadoc.io/doc/com.typesafe/config/1.4.3/com/typesafe/config/Config.html?is-external=true" title="class or interface in com.typesafe.config"><code>Config</code></a> object used to instantiate this <a href="../../../software/leonov/config/OptionalConfig.html" title="class in software.leonov.config"><code>OptionalConfig</code></a>.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getDirectory-java.lang.String-java.nio.file.LinkOption...-">getDirectory</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
             <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/LinkOption.html?is-external=true" title="class or interface in java.nio.file">LinkOption</a>...&nbsp;options)</code>
@@ -350,7 +359,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
  <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getDirectoryList-java.lang.String-java.nio.file.LinkOption...-">getDirectoryList</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
                 <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/LinkOption.html?is-external=true" title="class or interface in java.nio.file">LinkOption</a>...&nbsp;options)</code>
@@ -359,21 +368,21 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
  <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html?is-external=true" title="class or interface in java.lang">Double</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getDouble-java.lang.String-">getDouble</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>Double</code> value for the property at the given <code>path</code> expression or <code>null</code> if the property
  is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html?is-external=true" title="class or interface in java.lang">Double</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getDoubleList-java.lang.String-">getDoubleList</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>List</code> of <code>Double</code> values for the property at the given <code>path</code> expression or <code>null</code>
  if the property is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>&lt;T extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html?is-external=true" title="class or interface in java.lang">Enum</a>&lt;T&gt;&gt;<br>T</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getEnum-java.lang.Class-java.lang.String-">getEnum</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;type,
        <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
@@ -381,7 +390,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
  is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>&lt;T extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html?is-external=true" title="class or interface in java.lang">Enum</a>&lt;T&gt;&gt;<br><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util">Set</a>&lt;T&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getEnumSet-java.lang.Class-java.lang.String-">getEnumSet</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;type,
           <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
@@ -389,7 +398,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
  the property is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getFile-java.lang.String-java.nio.file.LinkOption...-">getFile</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
        <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/LinkOption.html?is-external=true" title="class or interface in java.nio.file">LinkOption</a>...&nbsp;options)</code>
@@ -398,7 +407,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
  <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getFileList-java.lang.String-java.nio.file.LinkOption...-">getFileList</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
            <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/LinkOption.html?is-external=true" title="class or interface in java.nio.file">LinkOption</a>...&nbsp;options)</code>
@@ -407,42 +416,42 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
  <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getInteger-java.lang.String-">getInteger</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns an <code>Integer</code> value for the property at the given <code>path</code> expression or <code>null</code> if the
  property is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getIntegerList-java.lang.String-">getIntegerList</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>List</code> of <code>Integer</code> values for the property at the given <code>path</code> expression or
  <code>null</code> if the property is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html?is-external=true" title="class or interface in java.lang">Long</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getLong-java.lang.String-">getLong</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>Long</code> value for the property at the given <code>path</code> expression or <code>null</code> if the property is
  set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html?is-external=true" title="class or interface in java.lang">Long</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getLongList-java.lang.String-">getLongList</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>List</code> of <code>Long</code> values for the property at the given <code>path</code> expression or <code>null</code>
  if the property is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalBoolean-java.lang.String-">getOptionalBoolean</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>Boolean</code> value for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code> expression or an
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to <code>null</code>.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalBooleanList-java.lang.String-">getOptionalBooleanList</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>List</code> of <code>Boolean</code> values for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code>
@@ -450,7 +459,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
  <code>null</code>.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalDirectory-java.lang.String-java.nio.file.LinkOption...-">getOptionalDirectory</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
                     <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/LinkOption.html?is-external=true" title="class or interface in java.nio.file">LinkOption</a>...&nbsp;options)</code>
@@ -459,7 +468,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
  <code>Optional</code> instance if the property is absent or set to <code>null</code>.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalDirectoryList-java.lang.String-java.nio.file.LinkOption...-">getOptionalDirectoryList</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
                         <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/LinkOption.html?is-external=true" title="class or interface in java.nio.file">LinkOption</a>...&nbsp;options)</code>
@@ -468,14 +477,14 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
  <code>Optional</code> instance if the property is absent or set to <code>null</code>.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html?is-external=true" title="class or interface in java.lang">Double</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalDouble-java.lang.String-">getOptionalDouble</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>Double</code> value for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code> expression or an
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to <code>null</code>.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html?is-external=true" title="class or interface in java.lang">Double</a>&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalDoubleList-java.lang.String-">getOptionalDoubleList</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>List</code> of <code>Double</code> values for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code>
@@ -483,7 +492,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
  <code>null</code>.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>&lt;T extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html?is-external=true" title="class or interface in java.lang">Enum</a>&lt;T&gt;&gt;<br><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;T&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalEnum-java.lang.Class-java.lang.String-">getOptionalEnum</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;type,
                <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
@@ -491,7 +500,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to <code>null</code>.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>&lt;T extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html?is-external=true" title="class or interface in java.lang">Enum</a>&lt;T&gt;&gt;<br><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util">Set</a>&lt;T&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalEnumSet-java.lang.Class-java.lang.String-">getOptionalEnumSet</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;type,
                   <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
@@ -500,7 +509,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
  <code>null</code>.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalFile-java.lang.String-java.nio.file.LinkOption...-">getOptionalFile</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
                <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/LinkOption.html?is-external=true" title="class or interface in java.nio.file">LinkOption</a>...&nbsp;options)</code>
@@ -508,7 +517,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
  if the property is absent or set to <code>null</code>.</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalFileList-java.lang.String-java.nio.file.LinkOption...-">getOptionalFileList</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
                    <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/LinkOption.html?is-external=true" title="class or interface in java.nio.file">LinkOption</a>...&nbsp;options)</code>
@@ -517,14 +526,14 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
  <code>Optional</code> instance if the property is absent or set to <code>null</code>.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalInteger-java.lang.String-">getOptionalInteger</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns an <code>Integer</code> value for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code> expression or
  an <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to <code>null</code>.</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalIntegerList-java.lang.String-">getOptionalIntegerList</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>List</code> of <code>Integer</code> values for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code>
@@ -532,14 +541,14 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
  <code>null</code>.</div>
 </td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html?is-external=true" title="class or interface in java.lang">Long</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalLong-java.lang.String-">getOptionalLong</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>Long</code> value for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code> expression or an
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to <code>null</code>.</div>
 </td>
 </tr>
-<tr id="i29" class="rowColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html?is-external=true" title="class or interface in java.lang">Long</a>&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalLongList-java.lang.String-">getOptionalLongList</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>List</code> of <code>Long</code> values for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code>
@@ -547,14 +556,14 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
  <code>null</code>.</div>
 </td>
 </tr>
-<tr id="i30" class="altColor">
+<tr id="i31" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalPath-java.lang.String-">getOptionalPath</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file"><code>Path</code></a> for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code> expression
  or an <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to <code>null</code>.</div>
 </td>
 </tr>
-<tr id="i31" class="rowColor">
+<tr id="i32" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalPathList-java.lang.String-">getOptionalPathList</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>List</code> of <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file"><code>Path</code></a> values for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given
@@ -562,14 +571,14 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
  to <code>null</code>.</div>
 </td>
 </tr>
-<tr id="i32" class="altColor">
+<tr id="i33" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Short.html?is-external=true" title="class or interface in java.lang">Short</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalShort-java.lang.String-">getOptionalShort</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>Short</code> value for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code> expression or an
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to <code>null</code>.</div>
 </td>
 </tr>
-<tr id="i33" class="rowColor">
+<tr id="i34" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Short.html?is-external=true" title="class or interface in java.lang">Short</a>&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalShortList-java.lang.String-">getOptionalShortList</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>List</code> of <code>Short</code> values for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code>
@@ -577,14 +586,14 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
  <code>null</code>.</div>
 </td>
 </tr>
-<tr id="i34" class="altColor">
+<tr id="i35" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalString-java.lang.String-">getOptionalString</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>String</code> value for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code> expression or an
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to <code>null</code>.</div>
 </td>
 </tr>
-<tr id="i35" class="rowColor">
+<tr id="i36" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getOptionalStringList-java.lang.String-">getOptionalStringList</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>List</code> of <code>String</code> values for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code>
@@ -592,55 +601,55 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
  <code>null</code>.</div>
 </td>
 </tr>
-<tr id="i36" class="altColor">
+<tr id="i37" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getPath-java.lang.String-">getPath</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file"><code>Path</code></a> for the property at the given <code>path</code> expression or <code>null</code> if the
  property is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 </td>
 </tr>
-<tr id="i37" class="rowColor">
+<tr id="i38" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getPathList-java.lang.String-">getPathList</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>List</code> of <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file"><code>Path</code></a> values for the property at the given <code>path</code> expression or
  <code>null</code> if the property is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 </td>
 </tr>
-<tr id="i38" class="altColor">
+<tr id="i39" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Short.html?is-external=true" title="class or interface in java.lang">Short</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getShort-java.lang.String-">getShort</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>Short</code> value for the property at the given <code>path</code> expression or <code>null</code> if the property
  is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 </td>
 </tr>
-<tr id="i39" class="rowColor">
+<tr id="i40" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Short.html?is-external=true" title="class or interface in java.lang">Short</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getShortList-java.lang.String-">getShortList</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>List</code> of <code>Short</code> values for the property at the given <code>path</code> expression or <code>null</code>
  if the property is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 </td>
 </tr>
-<tr id="i40" class="altColor">
+<tr id="i41" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getString-java.lang.String-">getString</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>String</code> value for the property at the given <code>path</code> expression or <code>null</code> if the property
  is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 </td>
 </tr>
-<tr id="i41" class="rowColor">
+<tr id="i42" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#getStringList-java.lang.String-">getStringList</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</code>
 <div class="block">Returns a <code>List</code> of <code>String</code> values for the property at the given <code>path</code> expression or <code>null</code>
  if the property is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 </td>
 </tr>
-<tr id="i42" class="altColor">
+<tr id="i43" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#isStrictMode--">isStrictMode</a></span>()</code>
 <div class="block">Returns whether or not strict-mode is enabled.</div>
 </td>
 </tr>
-<tr id="i43" class="rowColor">
+<tr id="i44" class="altColor">
 <td class="colFirst"><code><a href="../../../software/leonov/config/OptionalConfig.html" title="class in software.leonov.config">OptionalConfig</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-">setStrictMode</a></span>(boolean&nbsp;strictMode)</code>
 <div class="block">Returns a copy of this <a href="../../../software/leonov/config/OptionalConfig.html" title="class in software.leonov.config"><code>OptionalConfig</code></a> with the specified strict-mode setting.</div>
@@ -674,7 +683,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>from</h4>
-<pre>public static&nbsp;<a href="../../../software/leonov/config/OptionalConfig.html" title="class in software.leonov.config">OptionalConfig</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.253">from</a>(<a href="https://javadoc.io/doc/com.typesafe/config/1.4.3/com/typesafe/config/Config.html?is-external=true" title="class or interface in com.typesafe.config">Config</a>&nbsp;config)</pre>
+<pre>public static&nbsp;<a href="../../../software/leonov/config/OptionalConfig.html" title="class in software.leonov.config">OptionalConfig</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.256">from</a>(<a href="https://javadoc.io/doc/com.typesafe/config/1.4.3/com/typesafe/config/Config.html?is-external=true" title="class or interface in com.typesafe.config">Config</a>&nbsp;config)</pre>
 <div class="block">Creates a new <a href="../../../software/leonov/config/OptionalConfig.html" title="class in software.leonov.config"><code>OptionalConfig</code></a> from the underlying <a href="https://javadoc.io/doc/com.typesafe/config/1.4.3/com/typesafe/config/Config.html?is-external=true" title="class or interface in com.typesafe.config"><code>Config</code></a> object.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -684,17 +693,55 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 </dl>
 </li>
 </ul>
-<a name="getConfig--">
+<a name="getDelegate--">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getConfig</h4>
-<pre>public&nbsp;<a href="https://javadoc.io/doc/com.typesafe/config/1.4.3/com/typesafe/config/Config.html?is-external=true" title="class or interface in com.typesafe.config">Config</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.263">getConfig</a>()</pre>
+<h4>getDelegate</h4>
+<pre>public&nbsp;<a href="https://javadoc.io/doc/com.typesafe/config/1.4.3/com/typesafe/config/Config.html?is-external=true" title="class or interface in com.typesafe.config">Config</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.266">getDelegate</a>()</pre>
 <div class="block">Returns the original <a href="https://javadoc.io/doc/com.typesafe/config/1.4.3/com/typesafe/config/Config.html?is-external=true" title="class or interface in com.typesafe.config"><code>Config</code></a> object used to instantiate this <a href="../../../software/leonov/config/OptionalConfig.html" title="class in software.leonov.config"><code>OptionalConfig</code></a>.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the original <a href="https://javadoc.io/doc/com.typesafe/config/1.4.3/com/typesafe/config/Config.html?is-external=true" title="class or interface in com.typesafe.config"><code>Config</code></a> object used to instantiate this <a href="../../../software/leonov/config/OptionalConfig.html" title="class in software.leonov.config"><code>OptionalConfig</code></a></dd>
+</dl>
+</li>
+</ul>
+<a name="at-java.lang.String-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>at</h4>
+<pre>public&nbsp;<a href="../../../software/leonov/config/OptionalConfig.html" title="class in software.leonov.config">OptionalConfig</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.297">at</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<div class="block">Returns an <code>OptionalConfig</code> representing the nested configuration object at the specified path expression.
+ <p>
+ For example given the following configuration: <pre>
+ {
+     child {
+         prop1 = abc
+         prop2 = true
+     }
+     
+     prop3 = 5
+     
+     sibling {
+         prop4 = xyz
+     }
+ }
+ </pre> the call to <code>OptionalConfig.at("child")</code> will return the following nested configuration: <pre>
+ prop1 = abc
+ prop2 = true
+ </pre> such that <code>parent.getString("child.prop1").equals(parent.at("child").getString("prop1"))</code>.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>path</code> - the path expression</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the nested <code>Config</code> value at the requested path</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="https://javadoc.io/doc/com.typesafe/config/1.4.3/com/typesafe/config/ConfigException.Missing.html?is-external=true" title="class or interface in com.typesafe.config">ConfigException.Missing</a></code> - if property is absent or set to <code>null</code></dd>
+<dd><code><a href="https://javadoc.io/doc/com.typesafe/config/1.4.3/com/typesafe/config/ConfigException.WrongType.html?is-external=true" title="class or interface in com.typesafe.config">ConfigException.WrongType</a></code> - if property value does not reference a nested configuration
+                                                       type</dd>
 </dl>
 </li>
 </ul>
@@ -704,7 +751,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>setStrictMode</h4>
-<pre>public&nbsp;<a href="../../../software/leonov/config/OptionalConfig.html" title="class in software.leonov.config">OptionalConfig</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.277">setStrictMode</a>(boolean&nbsp;strictMode)</pre>
+<pre>public&nbsp;<a href="../../../software/leonov/config/OptionalConfig.html" title="class in software.leonov.config">OptionalConfig</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.312">setStrictMode</a>(boolean&nbsp;strictMode)</pre>
 <div class="block">Returns a copy of this <a href="../../../software/leonov/config/OptionalConfig.html" title="class in software.leonov.config"><code>OptionalConfig</code></a> with the specified strict-mode setting. When strict-mode is enabled
  properties set to <code>null</code> are treated as <a href="https://javadoc.io/doc/com.typesafe/config/1.4.3/com/typesafe/config/ConfigException.Missing.html?is-external=true" title="class or interface in com.typesafe.config"><code>absent</code></a> for the
  purpose of <code>getXXXX</code> methods.
@@ -724,7 +771,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>isStrictMode</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.287">isStrictMode</a>()</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.322">isStrictMode</a>()</pre>
 <div class="block">Returns whether or not strict-mode is enabled. When strict-mode is enabled properties set to <code>null</code> are treated
  as <a href="https://javadoc.io/doc/com.typesafe/config/1.4.3/com/typesafe/config/ConfigException.Missing.html?is-external=true" title="class or interface in com.typesafe.config"><code>absent</code></a> purpose of <code>getXXXX</code> methods.</div>
 <dl>
@@ -739,7 +786,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getString</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.304">getString</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.339">getString</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>String</code> value for the property at the given <code>path</code> expression or <code>null</code> if the property
  is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 <dl>
@@ -761,7 +808,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getOptionalString</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.318">getOptionalString</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.353">getOptionalString</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>String</code> value for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code> expression or an
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to <code>null</code>. Note that
  <a href="../../../software/leonov/config/OptionalConfig.html#isStrictMode--"><code>strict-mode</code></a> has no effect on optional properties.</div>
@@ -780,7 +827,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getStringList</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.337">getStringList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.372">getStringList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>List</code> of <code>String</code> values for the property at the given <code>path</code> expression or <code>null</code>
  if the property is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled. Similarly, if
  strict-mode is disabled, individual values within the list may be set to <code>null</code>.</div>
@@ -803,7 +850,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getOptionalStringList</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.353">getOptionalStringList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.388">getOptionalStringList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>List</code> of <code>String</code> values for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code>
  expression or an <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to
  <code>null</code>. Note that <a href="../../../software/leonov/config/OptionalConfig.html#isStrictMode--"><code>strict-mode</code></a> has no effect on optional properties, but if strict-mode
@@ -824,7 +871,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getShort</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Short.html?is-external=true" title="class or interface in java.lang">Short</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.374">getShort</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Short.html?is-external=true" title="class or interface in java.lang">Short</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.409">getShort</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>Short</code> value for the property at the given <code>path</code> expression or <code>null</code> if the property
  is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 <dl>
@@ -849,7 +896,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getOptionalShort</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Short.html?is-external=true" title="class or interface in java.lang">Short</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.391">getOptionalShort</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Short.html?is-external=true" title="class or interface in java.lang">Short</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.426">getOptionalShort</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>Short</code> value for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code> expression or an
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to <code>null</code>. Note that
  <a href="../../../software/leonov/config/OptionalConfig.html#isStrictMode--"><code>strict-mode</code></a> has no effect on optional properties.</div>
@@ -872,7 +919,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getShortList</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Short.html?is-external=true" title="class or interface in java.lang">Short</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.414">getShortList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Short.html?is-external=true" title="class or interface in java.lang">Short</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.449">getShortList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>List</code> of <code>Short</code> values for the property at the given <code>path</code> expression or <code>null</code>
  if the property is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled. Similarly, if
  strict-mode is disabled, individual values within the list may be set to <code>null</code>.</div>
@@ -899,7 +946,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getOptionalShortList</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Short.html?is-external=true" title="class or interface in java.lang">Short</a>&gt;&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.434">getOptionalShortList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Short.html?is-external=true" title="class or interface in java.lang">Short</a>&gt;&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.469">getOptionalShortList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>List</code> of <code>Short</code> values for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code>
  expression or an <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to
  <code>null</code>. Note that <a href="../../../software/leonov/config/OptionalConfig.html#isStrictMode--"><code>strict-mode</code></a> has no effect on optional properties, but if strict-mode
@@ -925,7 +972,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getInteger</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.455">getInteger</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.490">getInteger</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns an <code>Integer</code> value for the property at the given <code>path</code> expression or <code>null</code> if the
  property is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 <dl>
@@ -950,7 +997,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getOptionalInteger</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.472">getOptionalInteger</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.507">getOptionalInteger</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns an <code>Integer</code> value for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code> expression or
  an <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to <code>null</code>. Note that
  <a href="../../../software/leonov/config/OptionalConfig.html#isStrictMode--"><code>strict-mode</code></a> has no effect on optional properties.</div>
@@ -973,7 +1020,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getIntegerList</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.497">getIntegerList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.532">getIntegerList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>List</code> of <code>Integer</code> values for the property at the given <code>path</code> expression or
  <code>null</code> if the property is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.
  Similarly, if strict-mode is disabled, individual values within the list may be set to <code>null</code>.</div>
@@ -1002,7 +1049,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getOptionalIntegerList</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.518">getOptionalIntegerList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.553">getOptionalIntegerList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>List</code> of <code>Integer</code> values for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code>
  expression or an <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to
  <code>null</code>. Note that <a href="../../../software/leonov/config/OptionalConfig.html#isStrictMode--"><code>strict-mode</code></a> has no effect on optional properties, but if strict-mode
@@ -1029,7 +1076,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getLong</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html?is-external=true" title="class or interface in java.lang">Long</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.538">getLong</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html?is-external=true" title="class or interface in java.lang">Long</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.573">getLong</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>Long</code> value for the property at the given <code>path</code> expression or <code>null</code> if the property is
  set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled. If the value overflows or underflows
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html?is-external=true#MAX_VALUE" title="class or interface in java.lang"><code>Long.MAX_VALUE</code></a> or <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html?is-external=true#MIN_VALUE" title="class or interface in java.lang"><code>Long.MIN_VALUE</code></a> will be returned respectively.</div>
@@ -1053,7 +1100,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getOptionalLong</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html?is-external=true" title="class or interface in java.lang">Long</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.554">getOptionalLong</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html?is-external=true" title="class or interface in java.lang">Long</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.589">getOptionalLong</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>Long</code> value for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code> expression or an
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to <code>null</code>. If the value
  overflows or underflows <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html?is-external=true#MAX_VALUE" title="class or interface in java.lang"><code>Long.MAX_VALUE</code></a> or <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html?is-external=true#MIN_VALUE" title="class or interface in java.lang"><code>Long.MIN_VALUE</code></a> will be returned respectively. Note that
@@ -1075,7 +1122,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getLongList</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html?is-external=true" title="class or interface in java.lang">Long</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.576">getLongList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html?is-external=true" title="class or interface in java.lang">Long</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.611">getLongList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>List</code> of <code>Long</code> values for the property at the given <code>path</code> expression or <code>null</code>
  if the property is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled. Similarly, if
  strict-mode is disabled, individual values within the list may be set to <code>null</code>. An overflow or underflow for
@@ -1101,7 +1148,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getOptionalLongList</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html?is-external=true" title="class or interface in java.lang">Long</a>&gt;&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.595">getOptionalLongList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html?is-external=true" title="class or interface in java.lang">Long</a>&gt;&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.630">getOptionalLongList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>List</code> of <code>Long</code> values for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code>
  expression or an <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to
  <code>null</code>. An overflow or underflow for any value in the list will result in <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html?is-external=true#MAX_VALUE" title="class or interface in java.lang"><code>Long.MAX_VALUE</code></a> or
@@ -1126,7 +1173,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getDouble</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html?is-external=true" title="class or interface in java.lang">Double</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.614">getDouble</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html?is-external=true" title="class or interface in java.lang">Double</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.649">getDouble</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>Double</code> value for the property at the given <code>path</code> expression or <code>null</code> if the property
  is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 <dl>
@@ -1149,7 +1196,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getOptionalDouble</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html?is-external=true" title="class or interface in java.lang">Double</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.629">getOptionalDouble</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html?is-external=true" title="class or interface in java.lang">Double</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.664">getOptionalDouble</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>Double</code> value for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code> expression or an
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to <code>null</code>. Note that
  <a href="../../../software/leonov/config/OptionalConfig.html#isStrictMode--"><code>strict-mode</code></a> has no effect on optional properties.</div>
@@ -1170,7 +1217,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getDoubleList</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html?is-external=true" title="class or interface in java.lang">Double</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.650">getDoubleList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html?is-external=true" title="class or interface in java.lang">Double</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.685">getDoubleList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>List</code> of <code>Double</code> values for the property at the given <code>path</code> expression or <code>null</code>
  if the property is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled. Similarly, if
  strict-mode is disabled, individual values within the list may be set to <code>null</code>.</div>
@@ -1195,7 +1242,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getOptionalDoubleList</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html?is-external=true" title="class or interface in java.lang">Double</a>&gt;&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.668">getOptionalDoubleList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html?is-external=true" title="class or interface in java.lang">Double</a>&gt;&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.703">getOptionalDoubleList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>List</code> of <code>Double</code> values for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code>
  expression or an <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to
  <code>null</code>. Note that <a href="../../../software/leonov/config/OptionalConfig.html#isStrictMode--"><code>strict-mode</code></a> has no effect on optional properties, but if strict-mode
@@ -1219,7 +1266,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getBoolean</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.687">getBoolean</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.722">getBoolean</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>Boolean</code> value for the property at the given <code>path</code> expression or <code>null</code> if the property
  is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 <dl>
@@ -1242,7 +1289,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getOptionalBoolean</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.702">getOptionalBoolean</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.737">getOptionalBoolean</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>Boolean</code> value for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code> expression or an
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to <code>null</code>. Note that
  <a href="../../../software/leonov/config/OptionalConfig.html#isStrictMode--"><code>strict-mode</code></a> has no effect on optional properties.</div>
@@ -1263,7 +1310,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getBooleanList</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.724">getBooleanList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.759">getBooleanList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>List</code> of <code>Boolean</code> values for the property at the given <code>path</code> expression or
  <code>null</code> if the property is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.
  Similarly, if strict-mode is disabled, individual values within the list may be set to <code>null</code>.</div>
@@ -1289,7 +1336,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getOptionalBooleanList</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&gt;&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.742">getOptionalBooleanList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&gt;&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.777">getOptionalBooleanList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>List</code> of <code>Boolean</code> values for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code>
  expression or an <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to
  <code>null</code>. Note that <a href="../../../software/leonov/config/OptionalConfig.html#isStrictMode--"><code>strict-mode</code></a> has no effect on optional properties, but if strict-mode
@@ -1313,7 +1360,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getPath</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.765">getPath</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.800">getPath</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file"><code>Path</code></a> for the property at the given <code>path</code> expression or <code>null</code> if the
  property is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
 <dl>
@@ -1340,7 +1387,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getOptionalPath</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.784">getOptionalPath</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.819">getOptionalPath</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file"><code>Path</code></a> for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code> expression
  or an <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to <code>null</code>. Note
  that <a href="../../../software/leonov/config/OptionalConfig.html#isStrictMode--"><code>strict-mode</code></a> has no effect on optional properties.</div>
@@ -1365,7 +1412,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getFile</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.810">getFile</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.845">getFile</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
                     <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/LinkOption.html?is-external=true" title="class or interface in java.nio.file">LinkOption</a>...&nbsp;options)</pre>
 <div class="block">Returns an <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html?is-external=true#isRegularFile-java.nio.file.Path-java.nio.file.LinkOption...-" title="class or interface in java.nio.file"><code>existing</code></a> file <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file"><code>path</code></a> for the property at the
  given <code>path</code> expression or <code>null</code> if the property is set to <code>null</code> and
@@ -1398,7 +1445,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getOptionalFile</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.835">getOptionalFile</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.870">getOptionalFile</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
                                       <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/LinkOption.html?is-external=true" title="class or interface in java.nio.file">LinkOption</a>...&nbsp;options)</pre>
 <div class="block">Returns an <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html?is-external=true#isRegularFile-java.nio.file.Path-java.nio.file.LinkOption...-" title="class or interface in java.nio.file"><code>existing</code></a> file <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file"><code>path</code></a> for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code> expression or an <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance
  if the property is absent or set to <code>null</code>. Note that <a href="../../../software/leonov/config/OptionalConfig.html#isStrictMode--"><code>strict-mode</code></a> has no effect on
@@ -1427,7 +1474,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getDirectory</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.862">getDirectory</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.897">getDirectory</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
                          <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/LinkOption.html?is-external=true" title="class or interface in java.nio.file">LinkOption</a>...&nbsp;options)</pre>
 <div class="block">Returns an <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html?is-external=true#isDirectory-java.nio.file.Path-java.nio.file.LinkOption...-" title="class or interface in java.nio.file"><code>existing</code></a> directory <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file"><code>path</code></a> for the property at
  the given <code>path</code> expression or <code>null</code> if the property is set to <code>null</code> and
@@ -1460,7 +1507,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getOptionalDirectory</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.887">getOptionalDirectory</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.922">getOptionalDirectory</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
                                            <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/LinkOption.html?is-external=true" title="class or interface in java.nio.file">LinkOption</a>...&nbsp;options)</pre>
 <div class="block">Returns an <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html?is-external=true#isDirectory-java.nio.file.Path-java.nio.file.LinkOption...-" title="class or interface in java.nio.file"><code>existing</code></a> directory <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file"><code>path</code></a> for the
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code> expression or an <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a>
@@ -1490,7 +1537,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getPathList</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.912">getPathList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.947">getPathList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>List</code> of <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file"><code>Path</code></a> values for the property at the given <code>path</code> expression or
  <code>null</code> if the property is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.
  Similarly, if strict-mode is disabled, individual values within the list may be set to <code>null</code>.</div>
@@ -1518,7 +1565,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getOptionalPathList</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&gt;&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.933">getOptionalPathList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</a>&gt;&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.968">getOptionalPathList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>List</code> of <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file"><code>Path</code></a> values for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given
  <code>path</code> expression or an <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set
  to <code>null</code>. Note that <a href="../../../software/leonov/config/OptionalConfig.html#isStrictMode--"><code>strict-mode</code></a> has no effect on optional properties, but if
@@ -1545,7 +1592,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getFileList</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.959">getFileList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.994">getFileList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
                               <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/LinkOption.html?is-external=true" title="class or interface in java.nio.file">LinkOption</a>...&nbsp;options)</pre>
 <div class="block">Returns a <code>List</code> of <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html?is-external=true#isRegularFile-java.nio.file.Path-java.nio.file.LinkOption...-" title="class or interface in java.nio.file"><code>existing</code></a> file <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file"><code>path</code></a> values for
  the property at the given <code>path</code> expression or <code>null</code> if the property is set to <code>null</code> and
@@ -1578,7 +1625,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getOptionalFileList</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.984">getOptionalFileList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.1019">getOptionalFileList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
                                                 <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/LinkOption.html?is-external=true" title="class or interface in java.nio.file">LinkOption</a>...&nbsp;options)</pre>
 <div class="block">Returns a <code>List</code> of <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html?is-external=true#isRegularFile-java.nio.file.Path-java.nio.file.LinkOption...-" title="class or interface in java.nio.file"><code>existing</code></a> file <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file"><code>path</code></a> values for
  the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code> expression or an <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a>
@@ -1607,7 +1654,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getDirectoryList</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.1012">getDirectoryList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.1047">getDirectoryList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
                                    <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/LinkOption.html?is-external=true" title="class or interface in java.nio.file">LinkOption</a>...&nbsp;options)</pre>
 <div class="block">Returns a <code>List</code> of <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html?is-external=true#isDirectory-java.nio.file.Path-java.nio.file.LinkOption...-" title="class or interface in java.nio.file"><code>existing</code></a> directory <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file"><code>path</code></a> values
  for the property at the given <code>path</code> expression or <code>null</code> if the property is set to <code>null</code> and
@@ -1641,7 +1688,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getOptionalDirectoryList</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.1038">getOptionalDirectoryList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&gt;&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.1073">getOptionalDirectoryList</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path,
                                                      <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/LinkOption.html?is-external=true" title="class or interface in java.nio.file">LinkOption</a>...&nbsp;options)</pre>
 <div class="block">Returns a <code>List</code> of <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html?is-external=true#isDirectory-java.nio.file.Path-java.nio.file.LinkOption...-" title="class or interface in java.nio.file"><code>existing</code></a> directory <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file"><code>path</code></a> values
  for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code> expression or an <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a>
@@ -1671,7 +1718,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getEnum</h4>
-<pre>public&nbsp;&lt;T extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html?is-external=true" title="class or interface in java.lang">Enum</a>&lt;T&gt;&gt;&nbsp;T&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.1063">getEnum</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;type,
+<pre>public&nbsp;&lt;T extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html?is-external=true" title="class or interface in java.lang">Enum</a>&lt;T&gt;&gt;&nbsp;T&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.1098">getEnum</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;type,
                                      <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns an <code>Enum</code> value for the property at the given <code>path</code> expression or <code>null</code> if the property
  is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled.</div>
@@ -1701,7 +1748,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getOptionalEnum</h4>
-<pre>public&nbsp;&lt;T extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html?is-external=true" title="class or interface in java.lang">Enum</a>&lt;T&gt;&gt;&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;T&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.1084">getOptionalEnum</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;type,
+<pre>public&nbsp;&lt;T extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html?is-external=true" title="class or interface in java.lang">Enum</a>&lt;T&gt;&gt;&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;T&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.1119">getOptionalEnum</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;type,
                                                        <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns an <code>Enum</code> value for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code> expression or an
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to <code>null</code>. Note that
@@ -1729,7 +1776,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getEnumSet</h4>
-<pre>public&nbsp;&lt;T extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html?is-external=true" title="class or interface in java.lang">Enum</a>&lt;T&gt;&gt;&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util">Set</a>&lt;T&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.1110">getEnumSet</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;type,
+<pre>public&nbsp;&lt;T extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html?is-external=true" title="class or interface in java.lang">Enum</a>&lt;T&gt;&gt;&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util">Set</a>&lt;T&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.1145">getEnumSet</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;type,
                                              <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>Set</code> of <code>Enum</code> values for the property at the given <code>path</code> expression or <code>null</code> if
  the property is set to <code>null</code> and <a href="../../../software/leonov/config/OptionalConfig.html#setStrictMode-boolean-"><code>strict-mode</code></a> is disabled. Similarly, if
@@ -1760,7 +1807,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getOptionalEnumSet</h4>
-<pre>public&nbsp;&lt;T extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html?is-external=true" title="class or interface in java.lang">Enum</a>&lt;T&gt;&gt;&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util">Set</a>&lt;T&gt;&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.1136">getOptionalEnumSet</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;type,
+<pre>public&nbsp;&lt;T extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html?is-external=true" title="class or interface in java.lang">Enum</a>&lt;T&gt;&gt;&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util">Set</a>&lt;T&gt;&gt;&nbsp;<a href="../../../src-html/software/leonov/config/OptionalConfig.html#line.1171">getOptionalEnumSet</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;type,
                                                                <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;path)</pre>
 <div class="block">Returns a <code>Set</code> of <code>Enum</code> values for the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>optional</code></a> property at the given <code>path</code>
  expression or an <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true#empty--" title="class or interface in java.util"><code>empty</code></a> <code>Optional</code> instance if the property is absent or set to
