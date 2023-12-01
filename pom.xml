@@ -5,9 +5,7 @@
 
     <groupId>software.leonov.config</groupId>
     <artifactId>optional-config</artifactId>
-    <version>1.4.3RC1</version>
-
-    <name>Optional Config</name>
+    <version>1.4.3.RC1</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -15,12 +13,15 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven-javadoc-plugin.version>3.0.0</maven-javadoc-plugin.version>
         <maven-source-plugin.version>3.0.0</maven-source-plugin.version>
-        <typesafe-config-version>1.4.3</typesafe-config-version>
     </properties>
+
+    <name>Optional Config</name>
+    <description>Support for optional properties for Typesafe Config</description>
+    <url>https://github.com/zleonov/optional-config</url>
 
     <licenses>
         <license>
-            <name>Apache License, Version 2.0</name>
+            <name>Apache License 2.0</name>
             <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
@@ -29,7 +30,7 @@
         <dependency>
             <groupId>com.typesafe</groupId>
             <artifactId>config</artifactId>
-            <version>${typesafe-config-version}</version>
+            <version>1.4.3</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -58,18 +59,25 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>${project.basedir}</directory>
+                <includes>
+                    <include>LICENSE</include>
+                    <include>NOTICE</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
-            <plugin>
-                <artifactId>maven-site-plugin</artifactId>
-                <version>3.7.1</version>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <version>${maven-source-plugin.version}</version>
                 <executions>
                     <execution>
-                        <id>attach-sources</id>
                         <goals>
                             <goal>jar</goal>
                         </goals>
@@ -80,10 +88,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${maven-javadoc-plugin.version}</version>
-
                 <configuration>
-                    <reportOutputDirectory>${project.basedir}/docs/apidocs</reportOutputDirectory>
-                    <destDir>latest</destDir>
                     <sourcepath>${project.build.sourceDirectory}:${java.sourceDirectory}</sourcepath>
                     <subpackages>software.leonov</subpackages>
                     <quiet>false</quiet>
@@ -103,22 +108,27 @@
                     </doctitle>
                     <detectJavaApiLink>true</detectJavaApiLink>
                     <links>
-                        <link>https://javadoc.io/doc/com.typesafe/config/${typesafe-config-version}</link>
+                        <link>https://javadoc.io/doc/com.typesafe/config/1.4.3</link>
                     </links>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>attach-javadocs</id>
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/docs/apidocs/latest</outputDirectory>
+                        </configuration>
                     </execution>
                     <execution>
-                        <id>generate-javadoc-site-report</id>
-                        <phase>site</phase>
+                        <id>default-cli</id>
                         <goals>
                             <goal>javadoc</goal>
                         </goals>
+                        <configuration>
+                            <reportOutputDirectory>${project.basedir}/docs/apidocs</reportOutputDirectory>
+                            <destDir>latest</destDir>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
