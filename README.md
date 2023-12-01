@@ -21,12 +21,12 @@ final ExecutorService exec = Executors.newFixedThreadPool(nthreads);
 
 Goals
 -----
-- Create `getOptionalXXXX` and `getOptionalXXXXList` methods analogous to their `getXXXX` and `getXXXXList` counterparts.
-- Handle missing properties.
-- Handle `null` values (including in lists).
-- Raise identical exceptions as Typesafe Config.
-- No dependencies (other than Typesafe Config).
-- Java 8 compatible.
+- Create `getOptionalXXXX` and `getOptionalXXXXList` methods analogous to their `getXXXX` and `getXXXXList` counterparts
+- Handle missing properties
+- Handle `null` values (including in lists)
+- Raise identical exceptions as Typesafe Config
+- No dependencies (other than Typesafe Config)
+- Java 8 or higher
 
 Documentation
 -------------
