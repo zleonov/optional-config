@@ -1136,6 +1136,7 @@ class OptionalConfigTest {
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
+    
     @Test
     void test_At() {
         final OptionalConfig config = createConfiguration("outer { inner { prop = abc\noptional = null } }").setStrictMode(false);
