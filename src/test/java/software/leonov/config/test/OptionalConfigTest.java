@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2023 Zhenya Leonov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package software.leonov.config.test;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -58,21 +73,21 @@ class OptionalConfigTest {
     @ParameterizedTest
     @ValueSource(strings = { "true", "yes" })
     void test_getBoolean_true(final String value) {
-        final OptionalConfig conf = createConfiguration("prop = " + value);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = " + value + "} }");
 
-        assertThat(conf.getBoolean("prop")).isTrue();
-        assertThat(conf.getConfig().getBoolean("prop")).isTrue();
-        assertThat(conf.getOptionalBoolean("prop")).hasValue(true);
+        assertThat(conf.getBoolean("outer.inner.prop")).isTrue();
+        assertThat(conf.getConfig().getBoolean("outer.inner.prop")).isTrue();
+        assertThat(conf.getOptionalBoolean("outer.inner.prop")).hasValue(true);
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "false", "no" })
     void test_getBoolean_false(final String value) {
-        final OptionalConfig conf = createConfiguration("prop = " + value);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = " + value + "} }");
 
-        assertThat(conf.getBoolean("prop")).isFalse();
-        assertThat(conf.getConfig().getBoolean("prop")).isFalse();
-        assertThat(conf.getOptionalBoolean("prop")).hasValue(false);
+        assertThat(conf.getBoolean("outer.inner.prop")).isFalse();
+        assertThat(conf.getConfig().getBoolean("outer.inner.prop")).isFalse();
+        assertThat(conf.getOptionalBoolean("outer.inner.prop")).hasValue(false);
     }
 
     @Test
@@ -88,31 +103,31 @@ class OptionalConfigTest {
 
     @Test
     void test_getBoolean_null_strictMode_false() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(false);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(false);
 
-        assertThat(conf.getBoolean("prop")).isNull();
-        assertThat(conf.getOptionalBoolean("prop")).isEmpty();
+        assertThat(conf.getBoolean("outer.inner.prop")).isNull();
+        assertThat(conf.getOptionalBoolean("outer.inner.prop")).isEmpty();
     }
 
     @Test
     void test_getBoolean_null_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(true);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(true);
 
-        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getBoolean("prop"));
-        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getBoolean("prop"));
+        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getBoolean("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getBoolean("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-        assertThat(conf.getOptionalBoolean("prop")).isEmpty();
+        assertThat(conf.getOptionalBoolean("outer.inner.prop")).isEmpty();
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop {a = 1}", "prop = [a, b, c]", "prop = 1.5", "prop = abc" })
+    @ValueSource(strings = { "outer { inner { prop {a = 1} } }", "outer { inner { prop = [a, b, c] } }", "outer { inner { prop = 1.5 } }", "outer { inner { prop = abc } }" })
     void test_getBoolean_WrongType(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getBoolean("prop"));
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getBoolean("prop"));
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalBoolean("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getBoolean("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getBoolean("outer.inner.prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalBoolean("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -122,29 +137,29 @@ class OptionalConfigTest {
 
     @Test
     void test_getBooleanList() {
-        final OptionalConfig conf     = createConfiguration("prop = [true, false, true]");
+        final OptionalConfig conf     = createConfiguration("outer { inner { prop = [true, false, true] } }");
         final List<Boolean>  expected = Lists.newArrayList(true, false, true);
 
-        assertThat(conf.getBooleanList("prop")).isEqualTo(expected);
-        assertThat(conf.getOptionalBooleanList("prop")).hasValue(expected);
-        assertThat(conf.getConfig().getBooleanList("prop")).isEqualTo(expected);
+        assertThat(conf.getBooleanList("outer.inner.prop")).isEqualTo(expected);
+        assertThat(conf.getOptionalBooleanList("outer.inner.prop")).hasValue(expected);
+        assertThat(conf.getConfig().getBooleanList("outer.inner.prop")).isEqualTo(expected);
     }
 
     @Test
     void test_getBooleanList_null_element_strictMode_false() {
-        final OptionalConfig conf     = createConfiguration("prop = [true, false, null, true]").setStrictMode(false);
+        final OptionalConfig conf     = createConfiguration("outer { inner { prop = [true, false, null, true] } }").setStrictMode(false);
         final List<Boolean>  expected = Lists.newArrayList(true, false, null, true);
 
-        assertThat(conf.getBooleanList("prop")).isEqualTo(expected);
-        assertThat(conf.getOptionalBooleanList("prop")).hasValue(expected);
+        assertThat(conf.getBooleanList("outer.inner.prop")).isEqualTo(expected);
+        assertThat(conf.getOptionalBooleanList("outer.inner.prop")).hasValue(expected);
     }
 
     @Test
     void test_getBooleanList_null_element_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = [true, false, null, true]").setStrictMode(true);
-        final Exception      e1   = assertThrows(ConfigException.WrongType.class, () -> conf.getBooleanList("prop"));
-        final Exception      e2   = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getBooleanList("prop"));
-        final Exception      e3   = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalBooleanList("prop"));
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = [true, false, null, true] } }").setStrictMode(true);
+        final Exception      e1   = assertThrows(ConfigException.WrongType.class, () -> conf.getBooleanList("outer.inner.prop"));
+        final Exception      e2   = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getBooleanList("outer.inner.prop"));
+        final Exception      e3   = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalBooleanList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -152,44 +167,44 @@ class OptionalConfigTest {
 
     @Test
     void test_getBooleanList_null_strictMode_false() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(false);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(false);
 
-        assertThat(conf.getBooleanList("prop")).isNull();
-        assertThat(conf.getOptionalBooleanList("prop")).isEmpty();
+        assertThat(conf.getBooleanList("outer.inner.prop")).isNull();
+        assertThat(conf.getOptionalBooleanList("outer.inner.prop")).isEmpty();
     }
 
     @Test
     void test_getBooleanList_null_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(true);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(true);
 
-        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getBooleanList("prop"));
-        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getBooleanList("prop"));
+        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getBooleanList("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getBooleanList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-        assertThat(conf.getOptionalBooleanList("prop")).isEmpty();
+        assertThat(conf.getOptionalBooleanList("outer.inner.prop")).isEmpty();
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop = 5.3", "prop = a", "prop { abc = 1 }" })
+    @ValueSource(strings = { "outer { inner { prop = 5.3 } }", "outer { inner { prop = a } }", "outer { inner { prop { abc = 1 } } }" })
     void test_getBooleanList_WrongType(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getBooleanList("prop"));
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getBooleanList("prop"));
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalBooleanList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getBooleanList("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getBooleanList("outer.inner.prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalBooleanList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop = [true, false, 1.5]", "prop = [true, false, [true, false]]", "prop = [true, false, {a = false}]" })
+    @ValueSource(strings = { "outer { inner { prop = [true, false, 1.5] } }", "outer { inner { prop = [true, false, [true, false]] } }", "outer { inner { prop = [true, false, {a = false}] } }" })
     void test_getBooleanList_WrongType_element(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getBooleanList("prop"));
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getBooleanList("prop"));
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalBooleanList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getBooleanList("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getBooleanList("outer.inner.prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalBooleanList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -199,11 +214,11 @@ class OptionalConfigTest {
 
     @Test
     void test_getDouble() {
-        final OptionalConfig conf = createConfiguration("prop = 15498");
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = 15498 } }");
 
-        assertThat(conf.getDouble("prop")).isEqualTo(15498);
-        assertThat(conf.getConfig().getDouble("prop")).isEqualTo(15498);
-        assertThat(conf.getOptionalDouble("prop")).hasValue(15498);
+        assertThat(conf.getDouble("outer.inner.prop")).isEqualTo(15498);
+        assertThat(conf.getConfig().getDouble("outer.inner.prop")).isEqualTo(15498);
+        assertThat(conf.getOptionalDouble("outer.inner.prop")).hasValue(15498);
     }
 
     @Test
@@ -219,40 +234,40 @@ class OptionalConfigTest {
 
     @Test
     void test_getDouble_null_strictMode_false() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(false);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(false);
 
-        assertThat(conf.getDouble("prop")).isNull();
-        assertThat(conf.getOptionalDouble("prop")).isEmpty();
+        assertThat(conf.getDouble("outer.inner.prop")).isNull();
+        assertThat(conf.getOptionalDouble("outer.inner.prop")).isEmpty();
     }
 
     @Test
     void test_getDouble_null_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(true);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(true);
 
-        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getDouble("prop"));
-        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getDouble("prop"));
+        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getDouble("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getDouble("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-        assertThat(conf.getOptionalDouble("prop")).isEmpty();
+        assertThat(conf.getOptionalDouble("outer.inner.prop")).isEmpty();
     }
 
     @Test
     void test_getDouble_toBig() {
-        final OptionalConfig conf = createConfiguration("prop = -1.8976931348623157E308");
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = -1.8976931348623157E308 } }");
 
-        assertThat(conf.getDouble("prop")).isEqualTo(Double.NEGATIVE_INFINITY);
-        assertThat(conf.getConfig().getDouble("prop")).isEqualTo(Double.NEGATIVE_INFINITY);
-        assertThat(conf.getOptionalDouble("prop")).hasValue(Double.NEGATIVE_INFINITY);
+        assertThat(conf.getDouble("outer.inner.prop")).isEqualTo(Double.NEGATIVE_INFINITY);
+        assertThat(conf.getConfig().getDouble("outer.inner.prop")).isEqualTo(Double.NEGATIVE_INFINITY);
+        assertThat(conf.getOptionalDouble("outer.inner.prop")).hasValue(Double.NEGATIVE_INFINITY);
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop {a = 1}", "prop = [a, b, c]", "prop = abc", "prop = true" })
+    @ValueSource(strings = { "outer { inner { prop {a = 1} } }", "outer { inner { prop = [a, b, c] } }", "outer { inner { prop = abc } }", "outer { inner { prop = true } }" })
     void test_getDouble_WrongType(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getDouble("prop"));
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getDouble("prop"));
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalDouble("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getDouble("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getDouble("outer.inner.prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalDouble("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -262,40 +277,40 @@ class OptionalConfigTest {
 
     @Test
     void test_getDoubleList() {
-        final OptionalConfig conf     = createConfiguration("prop = [7.5, 32.3, 14.1]");
+        final OptionalConfig conf     = createConfiguration("outer { inner { prop = [7.5, 32.3, 14.1] } }");
         final List<Double>   expected = Lists.newArrayList(7.5, 32.3, 14.1);
 
-        assertThat(conf.getDoubleList("prop")).isEqualTo(expected);
-        assertThat(conf.getOptionalDoubleList("prop")).hasValue(expected);
-        assertThat(conf.getConfig().getDoubleList("prop")).isEqualTo(expected);
+        assertThat(conf.getDoubleList("outer.inner.prop")).isEqualTo(expected);
+        assertThat(conf.getOptionalDoubleList("outer.inner.prop")).hasValue(expected);
+        assertThat(conf.getConfig().getDoubleList("outer.inner.prop")).isEqualTo(expected);
     }
 
     @Test
     void test_getDoubleList_element_toBig() {
-        final OptionalConfig conf = createConfiguration("prop = [1.8976931348623157E308, 5.3]");
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = [1.8976931348623157E308, 5.3] } }");
 
         final List<Double> expected = Lists.newArrayList(Double.POSITIVE_INFINITY, 5.3);
 
-        assertThat(conf.getDoubleList("prop")).isEqualTo(expected);
-        assertThat(conf.getConfig().getDoubleList("prop")).isEqualTo(expected);
-        assertThat(conf.getOptionalDoubleList("prop")).hasValue(expected);
+        assertThat(conf.getDoubleList("outer.inner.prop")).isEqualTo(expected);
+        assertThat(conf.getConfig().getDoubleList("outer.inner.prop")).isEqualTo(expected);
+        assertThat(conf.getOptionalDoubleList("outer.inner.prop")).hasValue(expected);
     }
 
     @Test
     void test_getDoubleList_null_element_strictMode_false() {
-        final OptionalConfig conf     = createConfiguration("prop = [1.1, 2.2, null, 4.4, null]").setStrictMode(false);
+        final OptionalConfig conf     = createConfiguration("outer { inner { prop = [1.1, 2.2, null, 4.4, null] } }").setStrictMode(false);
         final List<Double>   expected = Lists.newArrayList(1.1, 2.2, null, 4.4, null);
 
-        assertThat(conf.getDoubleList("prop")).isEqualTo(expected);
-        assertThat(conf.getOptionalDoubleList("prop")).hasValue(expected);
+        assertThat(conf.getDoubleList("outer.inner.prop")).isEqualTo(expected);
+        assertThat(conf.getOptionalDoubleList("outer.inner.prop")).hasValue(expected);
     }
 
     @Test
     void test_getDoubleList_null_element_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = [1.1, 2.2, null, 4.4, null]").setStrictMode(true);
-        final Exception      e1   = assertThrows(ConfigException.WrongType.class, () -> conf.getDoubleList("prop"));
-        final Exception      e2   = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getDoubleList("prop"));
-        final Exception      e3   = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalDoubleList("prop"));
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = [1.1, 2.2, null, 4.4, null] } }").setStrictMode(true);
+        final Exception      e1   = assertThrows(ConfigException.WrongType.class, () -> conf.getDoubleList("outer.inner.prop"));
+        final Exception      e2   = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getDoubleList("outer.inner.prop"));
+        final Exception      e3   = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalDoubleList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -303,46 +318,46 @@ class OptionalConfigTest {
 
     @Test
     void test_getDoubleList_null_strictMode_false() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(false);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(false);
 
-        assertThat(conf.getDoubleList("prop")).isNull();
-        assertThat(conf.getOptionalDoubleList("prop")).isEmpty();
+        assertThat(conf.getDoubleList("outer.inner.prop")).isNull();
+        assertThat(conf.getOptionalDoubleList("outer.inner.prop")).isEmpty();
     }
 
     @Test
     void test_getDoubleList_null_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(true);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(true);
 
-        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getDoubleList("prop"));
-        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getDoubleList("prop"));
+        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getDoubleList("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getDoubleList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-        assertThat(conf.getOptionalDoubleList("prop")).isEmpty();
+        assertThat(conf.getOptionalDoubleList("outer.inner.prop")).isEmpty();
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop = true", "prop = a", "prop { abc = 1 }" })
+    @ValueSource(strings = { "outer { inner { prop = true } }", "outer { inner { prop = a } }", "outer { inner { prop { abc = 1 } } }" })
     void test_getDoubleList_WrongType(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getDoubleList("prop"));
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getDoubleList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getDoubleList("outer.inner.prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getDoubleList("outer.inner.prop"));
 
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalDoubleList("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalDoubleList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop = [true, false, abc]", "prop = [1.5, 2.3, [3.4, 4.89]]", "prop = [1.2, 2.3, {a = 3.4}]" })
+    @ValueSource(strings = { "outer { inner { prop = [true, false, abc] } }", "outer { inner { prop = [1.5, 2.3, [3.4, 4.89]] } }", "outer { inner { prop = [1.2, 2.3, {a = 3.4}] } }" })
     void test_getDoubleList_WrongType_element(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getDoubleList("prop"));
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getDoubleList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getDoubleList("outer.inner.prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getDoubleList("outer.inner.prop"));
 
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalDoubleList("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalDoubleList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -352,12 +367,12 @@ class OptionalConfigTest {
 
     @Test
     void test_getShort() {
-        final OptionalConfig conf = createConfiguration("prop = 15498");
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = 15498 } }");
 
-        assertThat(conf.getShort("prop")).isEqualTo(15498);
-        assertThat(conf.getConfig().getInt("prop")).isEqualTo(15498);
+        assertThat(conf.getShort("outer.inner.prop")).isEqualTo(15498);
+        assertThat(conf.getConfig().getInt("outer.inner.prop")).isEqualTo(15498);
 
-        assertThat(conf.getOptionalShort("prop")).hasValue(15498);
+        assertThat(conf.getOptionalShort("outer.inner.prop")).hasValue(15498);
     }
 
     @Test
@@ -373,43 +388,43 @@ class OptionalConfigTest {
 
     @Test
     void test_getShort_null_strictMode_false() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(false);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(false);
 
-        assertThat(conf.getShort("prop")).isNull();
-        assertThat(conf.getOptionalShort("prop")).isEmpty();
+        assertThat(conf.getShort("outer.inner.prop")).isNull();
+        assertThat(conf.getOptionalShort("outer.inner.prop")).isEmpty();
     }
 
     @Test
     void test_getShort_null_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(true);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(true);
 
-        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getShort("prop"));
-        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getInt("prop"));
+        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getShort("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getInt("outer.inner.prop"));
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
 
-        assertThat(conf.getOptionalShort("prop")).isEmpty();
+        assertThat(conf.getOptionalShort("outer.inner.prop")).isEmpty();
     }
 
     @Test
     void test_getShort_toBig() {
-        final OptionalConfig conf = createConfiguration("prop = 3147483647");
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = 3147483647 } }");
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getShort("prop"));
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalShort("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getShort("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalShort("outer.inner.prop"));
 
         assertThat(e1.getMessage()).endsWith("prop has type out-of-range value 3147483647 rather than 16-bit short");
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop {a = 1}", "prop = [a, b, c]", "prop = abc", "prop = true" })
+    @ValueSource(strings = { "outer { inner { prop {a = 1} } }", "outer { inner { prop = [a, b, c] } }", "outer { inner { prop = abc } }", "outer { inner { prop = true } }" })
     void test_getShort_WrongType(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getShort("prop"));
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getInt("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getShort("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getInt("outer.inner.prop"));
 
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalShort("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalShort("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -419,21 +434,21 @@ class OptionalConfigTest {
 
     @Test
     void test_getShortList() {
-        final OptionalConfig conf     = createConfiguration("prop = [7, 32, 14]");
+        final OptionalConfig conf     = createConfiguration("outer { inner { prop = [7, 32, 14] } }");
         final List<Short>    expected = Lists.newArrayList((short) 7, (short) 32, (short) 14);
 
-        assertThat(conf.getShortList("prop")).isEqualTo(expected);
-        assertThat(conf.getOptionalShortList("prop")).hasValue(expected);
+        assertThat(conf.getShortList("outer.inner.prop")).isEqualTo(expected);
+        assertThat(conf.getOptionalShortList("outer.inner.prop")).hasValue(expected);
 
-        assertThat(Lists.transform(conf.getConfig().getIntList("prop"), i -> i.shortValue())).isEqualTo(expected);
+        assertThat(Lists.transform(conf.getConfig().getIntList("outer.inner.prop"), i -> i.shortValue())).isEqualTo(expected);
     }
 
     @Test
     void test_getShortList_element_toBig() {
-        final OptionalConfig conf = createConfiguration("prop = [3147483647]");
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = [3147483647] } }");
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getShortList("prop"));
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalShortList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getShortList("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalShortList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).endsWith("prop has type out-of-range value 3147483647 rather than 16-bit short");
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
@@ -441,18 +456,18 @@ class OptionalConfigTest {
 
     @Test
     void test_getShortList_null_element_strictMode_false() {
-        final OptionalConfig conf     = createConfiguration("prop = [1, 2, null, 4, null]").setStrictMode(false);
+        final OptionalConfig conf     = createConfiguration("outer { inner { prop = [1, 2, null, 4, null] } }").setStrictMode(false);
         final List<Short>    expected = Lists.newArrayList((short) 1, (short) 2, null, (short) 4, null);
-        assertThat(conf.getShortList("prop")).isEqualTo(expected);
-        assertThat(conf.getOptionalShortList("prop")).hasValue(expected);
+        assertThat(conf.getShortList("outer.inner.prop")).isEqualTo(expected);
+        assertThat(conf.getOptionalShortList("outer.inner.prop")).hasValue(expected);
     }
 
     @Test
     void test_getShortList_null_element_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = [1, 2, null, 4, null]").setStrictMode(true);
-        final Exception      e1   = assertThrows(ConfigException.WrongType.class, () -> conf.getShortList("prop"));
-        final Exception      e2   = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("prop"));
-        final Exception      e3   = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalShortList("prop"));
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = [1, 2, null, 4, null] } }").setStrictMode(true);
+        final Exception      e1   = assertThrows(ConfigException.WrongType.class, () -> conf.getShortList("outer.inner.prop"));
+        final Exception      e2   = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("outer.inner.prop"));
+        final Exception      e3   = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalShortList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -460,45 +475,45 @@ class OptionalConfigTest {
 
     @Test
     void test_getShortList_null_strictMode_false() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(false);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(false);
 
-        assertThat(conf.getShortList("prop")).isNull();
-        assertThat(conf.getOptionalShortList("prop")).isEmpty();
+        assertThat(conf.getShortList("outer.inner.prop")).isNull();
+        assertThat(conf.getOptionalShortList("outer.inner.prop")).isEmpty();
     }
 
     @Test
     void test_getShortList_null_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(true);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(true);
 
-        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getShortList("prop"));
-        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getIntList("prop"));
+        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getShortList("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getIntList("outer.inner.prop"));
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
 
-        assertThat(conf.getOptionalShortList("prop")).isEmpty();
+        assertThat(conf.getOptionalShortList("outer.inner.prop")).isEmpty();
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop = 5.3", "prop = a", "prop { abc = 1 }" })
+    @ValueSource(strings = { "outer { inner { prop = 5.3 } }", "outer { inner { prop = a } }", "outer { inner { prop { abc = 1 } } }" })
     void test_getShortList_WrongType(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getShortList("prop"));
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getShortList("outer.inner.prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("outer.inner.prop"));
 
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalShortList("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalShortList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop = [true, false, abc]", "prop = [1, 2, [3, 4]]", "prop = [1, 2, {a = 3}]" })
+    @ValueSource(strings = { "outer { inner { prop = [true, false, abc] } }", "outer { inner { prop = [1, 2, [3, 4]] } }", "outer { inner { prop = [1, 2, {a = 3}] } }" })
     void test_getShortList_WrongType_element(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getShortList("prop"));
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("prop"));
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalShortList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getShortList("outer.inner.prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalShortList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -508,12 +523,12 @@ class OptionalConfigTest {
 
     @Test
     void test_getInteger() {
-        final OptionalConfig conf = createConfiguration("prop = 15498");
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = 15498 } }");
 
-        assertThat(conf.getInteger("prop")).isEqualTo(15498);
-        assertThat(conf.getConfig().getInt("prop")).isEqualTo(15498);
+        assertThat(conf.getInteger("outer.inner.prop")).isEqualTo(15498);
+        assertThat(conf.getConfig().getInt("outer.inner.prop")).isEqualTo(15498);
 
-        assertThat(conf.getOptionalInteger("prop")).hasValue(15498);
+        assertThat(conf.getOptionalInteger("outer.inner.prop")).hasValue(15498);
     }
 
     @Test
@@ -529,45 +544,45 @@ class OptionalConfigTest {
 
     @Test
     void test_getInteger_null_strictMode_false() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(false);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(false);
 
-        assertThat(conf.getInteger("prop")).isNull();
-        assertThat(conf.getOptionalInteger("prop")).isEmpty();
+        assertThat(conf.getInteger("outer.inner.prop")).isNull();
+        assertThat(conf.getOptionalInteger("outer.inner.prop")).isEmpty();
     }
 
     @Test
     void test_getInteger_null_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(true);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(true);
 
-        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getInteger("prop"));
-        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getInt("prop"));
+        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getInteger("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getInt("outer.inner.prop"));
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
 
-        assertThat(conf.getOptionalInteger("prop")).isEmpty();
+        assertThat(conf.getOptionalInteger("outer.inner.prop")).isEmpty();
     }
 
     @Test
     void test_getInteger_toBig() {
-        final OptionalConfig conf = createConfiguration("prop = 3147483647");
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = 3147483647 } }");
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getInteger("prop"));
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getInt("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getInteger("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getInt("outer.inner.prop"));
 
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalInteger("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalInteger("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop {a = 1}", "prop = [a, b, c]", "prop = abc", "prop = true" })
+    @ValueSource(strings = { "outer { inner { prop {a = 1} } }", "outer { inner { prop = [a, b, c] } }", "outer { inner { prop = abc } }", "outer { inner { prop = true } }" })
     void test_getInteger_WrongType(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getInteger("prop"));
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getInt("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getInteger("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getInt("outer.inner.prop"));
 
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalInteger("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalInteger("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -577,22 +592,22 @@ class OptionalConfigTest {
 
     @Test
     void test_getIntegerList() {
-        final OptionalConfig conf     = createConfiguration("prop = [7, 32, 14]");
+        final OptionalConfig conf     = createConfiguration("outer { inner { prop = [7, 32, 14] } }");
         final List<Integer>  expected = Lists.newArrayList(7, 32, 14);
 
-        assertThat(conf.getIntegerList("prop")).isEqualTo(expected);
-        assertThat(conf.getOptionalIntegerList("prop")).hasValue(expected);
+        assertThat(conf.getIntegerList("outer.inner.prop")).isEqualTo(expected);
+        assertThat(conf.getOptionalIntegerList("outer.inner.prop")).hasValue(expected);
 
-        assertThat(conf.getConfig().getIntList("prop")).isEqualTo(expected);
+        assertThat(conf.getConfig().getIntList("outer.inner.prop")).isEqualTo(expected);
     }
 
     @Test
     void test_getIntegerList_element_toBig() {
-        final OptionalConfig conf = createConfiguration("prop = [3147483647]");
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = [3147483647] } }");
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getIntegerList("prop"));
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("prop"));
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalIntegerList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getIntegerList("outer.inner.prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalIntegerList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -600,18 +615,18 @@ class OptionalConfigTest {
 
     @Test
     void test_getIntegerList_null_element_strictMode_false() {
-        final OptionalConfig conf     = createConfiguration("prop = [1, 2, null, 4, null]").setStrictMode(false);
+        final OptionalConfig conf     = createConfiguration("outer { inner { prop = [1, 2, null, 4, null] } }").setStrictMode(false);
         final List<Integer>  expected = Lists.newArrayList(1, 2, null, 4, null);
-        assertThat(conf.getIntegerList("prop")).isEqualTo(expected);
-        assertThat(conf.getOptionalIntegerList("prop")).hasValue(expected);
+        assertThat(conf.getIntegerList("outer.inner.prop")).isEqualTo(expected);
+        assertThat(conf.getOptionalIntegerList("outer.inner.prop")).hasValue(expected);
     }
 
     @Test
     void test_getIntegerList_null_element_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = [1, 2, null, 4, null]").setStrictMode(true);
-        final Exception      e1   = assertThrows(ConfigException.WrongType.class, () -> conf.getIntegerList("prop"));
-        final Exception      e2   = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("prop"));
-        final Exception      e3   = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalIntegerList("prop"));
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = [1, 2, null, 4, null] } }").setStrictMode(true);
+        final Exception      e1   = assertThrows(ConfigException.WrongType.class, () -> conf.getIntegerList("outer.inner.prop"));
+        final Exception      e2   = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("outer.inner.prop"));
+        final Exception      e3   = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalIntegerList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -619,45 +634,45 @@ class OptionalConfigTest {
 
     @Test
     void test_getIntegerList_null_strictMode_false() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(false);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(false);
 
-        assertThat(conf.getIntegerList("prop")).isNull();
-        assertThat(conf.getOptionalIntegerList("prop")).isEmpty();
+        assertThat(conf.getIntegerList("outer.inner.prop")).isNull();
+        assertThat(conf.getOptionalIntegerList("outer.inner.prop")).isEmpty();
     }
 
     @Test
     void test_getIntegerList_null_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(true);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(true);
 
-        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getIntegerList("prop"));
-        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getIntList("prop"));
+        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getIntegerList("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getIntList("outer.inner.prop"));
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
 
-        assertThat(conf.getOptionalIntegerList("prop")).isEmpty();
+        assertThat(conf.getOptionalIntegerList("outer.inner.prop")).isEmpty();
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop = 5.3", "prop = a", "prop { abc = 1 }" })
+    @ValueSource(strings = { "outer { inner { prop = 5.3 } }", "outer { inner { prop = a } }", "outer { inner { prop { abc = 1 } } }" })
     void test_getIntegerList_WrongType(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getIntegerList("prop"));
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getIntegerList("outer.inner.prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("outer.inner.prop"));
 
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalIntegerList("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalIntegerList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop = [true, false, abc]", "prop = [1, 2, [3, 4]]", "prop = [1, 2, {a = 3}]" })
+    @ValueSource(strings = { "outer { inner { prop = [true, false, abc] } }", "outer { inner { prop = [1, 2, [3, 4]] } }", "outer { inner { prop = [1, 2, {a = 3}] } }" })
     void test_getIntegerList_WrongType_element(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getIntegerList("prop"));
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("prop"));
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalIntegerList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getIntegerList("outer.inner.prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getIntList("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalIntegerList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -667,12 +682,12 @@ class OptionalConfigTest {
 
     @Test
     void test_getLong() {
-        final OptionalConfig conf = createConfiguration("prop = 15498");
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = 15498 } }");
 
-        assertThat(conf.getLong("prop")).isEqualTo(15498);
-        assertThat(conf.getConfig().getLong("prop")).isEqualTo(15498);
+        assertThat(conf.getLong("outer.inner.prop")).isEqualTo(15498);
+        assertThat(conf.getConfig().getLong("outer.inner.prop")).isEqualTo(15498);
 
-        assertThat(conf.getOptionalLong("prop")).hasValue(15498);
+        assertThat(conf.getOptionalLong("outer.inner.prop")).hasValue(15498);
     }
 
     @Test
@@ -688,42 +703,42 @@ class OptionalConfigTest {
 
     @Test
     void test_getLong_null_strictMode_false() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(false);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(false);
 
-        assertThat(conf.getLong("prop")).isNull();
-        assertThat(conf.getOptionalLong("prop")).isEmpty();
+        assertThat(conf.getLong("outer.inner.prop")).isNull();
+        assertThat(conf.getOptionalLong("outer.inner.prop")).isEmpty();
     }
 
     @Test
     void test_getLong_null_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(true);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(true);
 
-        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getLong("prop"));
-        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getLong("prop"));
+        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getLong("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getLong("outer.inner.prop"));
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
 
-        assertThat(conf.getOptionalLong("prop")).isEmpty();
+        assertThat(conf.getOptionalLong("outer.inner.prop")).isEmpty();
     }
 
     @Test
     void test_getLong_toBig() {
-        final OptionalConfig conf = createConfiguration("prop = 19223372036854775807");
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = 19223372036854775807 } }");
 
-        assertThat(conf.getLong("prop")).isEqualTo(Long.MAX_VALUE);
-        assertThat(conf.getConfig().getLong("prop")).isEqualTo(Long.MAX_VALUE);
+        assertThat(conf.getLong("outer.inner.prop")).isEqualTo(Long.MAX_VALUE);
+        assertThat(conf.getConfig().getLong("outer.inner.prop")).isEqualTo(Long.MAX_VALUE);
 
-        assertThat(conf.getOptionalLong("prop")).hasValue(Long.MAX_VALUE);
+        assertThat(conf.getOptionalLong("outer.inner.prop")).hasValue(Long.MAX_VALUE);
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop {a = 1}", "prop = [a, b, c]", "prop = abc", "prop = true" })
+    @ValueSource(strings = { "outer { inner { prop {a = 1} } }", "outer { inner { prop = [a, b, c] } }", "outer { inner { prop = abc } }", "outer { inner { prop = true } }" })
     void test_getLong_WrongType(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getLong("prop"));
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getLong("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getLong("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getLong("outer.inner.prop"));
 
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalLong("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalLong("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -733,40 +748,40 @@ class OptionalConfigTest {
 
     @Test
     void test_getLongList() {
-        final OptionalConfig conf     = createConfiguration("prop = [7, 32, 14]");
+        final OptionalConfig conf     = createConfiguration("outer { inner { prop = [7, 32, 14] } }");
         final List<Long>     expected = Lists.newArrayList(7L, 32L, 14L);
 
-        assertThat(conf.getLongList("prop")).isEqualTo(expected);
-        assertThat(conf.getOptionalLongList("prop")).hasValue(expected);
+        assertThat(conf.getLongList("outer.inner.prop")).isEqualTo(expected);
+        assertThat(conf.getOptionalLongList("outer.inner.prop")).hasValue(expected);
 
-        assertThat(conf.getConfig().getLongList("prop")).isEqualTo(expected);
+        assertThat(conf.getConfig().getLongList("outer.inner.prop")).isEqualTo(expected);
     }
 
     @Test
     void test_getLongList_element_toBig() {
-        final OptionalConfig conf = createConfiguration("prop = [19223372036854775807, 5]");
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = [19223372036854775807, 5] } }");
 
         final List<Long> expected = Lists.newArrayList(Long.MAX_VALUE, 5L);
 
-        assertThat(conf.getLongList("prop")).isEqualTo(expected);
-        assertThat(conf.getConfig().getLongList("prop")).isEqualTo(expected);
-        assertThat(conf.getOptionalLongList("prop")).hasValue(expected);
+        assertThat(conf.getLongList("outer.inner.prop")).isEqualTo(expected);
+        assertThat(conf.getConfig().getLongList("outer.inner.prop")).isEqualTo(expected);
+        assertThat(conf.getOptionalLongList("outer.inner.prop")).hasValue(expected);
     }
 
     @Test
     void test_getLongList_null_element_strictMode_false() {
-        final OptionalConfig conf     = createConfiguration("prop = [1, 2, null, 4, null]").setStrictMode(false);
+        final OptionalConfig conf     = createConfiguration("outer { inner { prop = [1, 2, null, 4, null] } }").setStrictMode(false);
         final List<Long>     expected = Lists.newArrayList(1L, 2L, null, 4L, null);
-        assertThat(conf.getLongList("prop")).isEqualTo(expected);
-        assertThat(conf.getOptionalLongList("prop")).hasValue(expected);
+        assertThat(conf.getLongList("outer.inner.prop")).isEqualTo(expected);
+        assertThat(conf.getOptionalLongList("outer.inner.prop")).hasValue(expected);
     }
 
     @Test
     void test_getLongList_null_element_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = [1, 2, null, 4, null]").setStrictMode(true);
-        final Exception      e1   = assertThrows(ConfigException.WrongType.class, () -> conf.getLongList("prop"));
-        final Exception      e2   = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getLongList("prop"));
-        final Exception      e3   = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalLongList("prop"));
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = [1, 2, null, 4, null] } }").setStrictMode(true);
+        final Exception      e1   = assertThrows(ConfigException.WrongType.class, () -> conf.getLongList("outer.inner.prop"));
+        final Exception      e2   = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getLongList("outer.inner.prop"));
+        final Exception      e3   = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalLongList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -774,46 +789,46 @@ class OptionalConfigTest {
 
     @Test
     void test_getLongList_null_strictMode_false() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(false);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(false);
 
-        assertThat(conf.getLongList("prop")).isNull();
-        assertThat(conf.getOptionalLongList("prop")).isEmpty();
+        assertThat(conf.getLongList("outer.inner.prop")).isNull();
+        assertThat(conf.getOptionalLongList("outer.inner.prop")).isEmpty();
     }
 
     @Test
     void test_getLongList_null_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(true);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(true);
 
-        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getLongList("prop"));
-        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getLongList("prop"));
+        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getLongList("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getLongList("outer.inner.prop"));
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
 
-        assertThat(conf.getOptionalLongList("prop")).isEmpty();
+        assertThat(conf.getOptionalLongList("outer.inner.prop")).isEmpty();
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop = 5.3", "prop = a", "prop { abc = 1 }" })
+    @ValueSource(strings = { "outer { inner { prop = 5.3 } }", "outer { inner { prop = a } }", "outer { inner { prop { abc = 1 } } }" })
     void test_getLongList_WrongType(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getLongList("prop"));
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getLongList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getLongList("outer.inner.prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getLongList("outer.inner.prop"));
 
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalLongList("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalLongList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop = [true, false, abc]", "prop = [1, 2, [3, 4]]", "prop = [1, 2, {a = 3}]" })
+    @ValueSource(strings = { "outer { inner { prop = [true, false, abc] } }", "outer { inner { prop = [1, 2, [3, 4]] } }", "outer { inner { prop = [1, 2, {a = 3}] } }" })
     void test_getLongList_WrongType_element(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getLongList("prop"));
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getLongList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getLongList("outer.inner.prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getLongList("outer.inner.prop"));
 
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalLongList("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalLongList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -823,12 +838,12 @@ class OptionalConfigTest {
 
     @Test
     void test_getString() {
-        final OptionalConfig conf = createConfiguration("prop = FooBar XYZ");
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = FooBar XYZ } }");
 
-        assertThat(conf.getString("prop")).isEqualTo("FooBar XYZ");
-        assertThat(conf.getConfig().getString("prop")).isEqualTo("FooBar XYZ");
+        assertThat(conf.getString("outer.inner.prop")).isEqualTo("FooBar XYZ");
+        assertThat(conf.getConfig().getString("outer.inner.prop")).isEqualTo("FooBar XYZ");
 
-        assertThat(conf.getOptionalString("prop")).hasValue("FooBar XYZ");
+        assertThat(conf.getOptionalString("outer.inner.prop")).hasValue("FooBar XYZ");
     }
 
     @Test
@@ -844,32 +859,32 @@ class OptionalConfigTest {
 
     @Test
     void test_getString_null_strictMode_false() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(false);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(false);
 
-        assertThat(conf.getString("prop")).isNull();
-        assertThat(conf.getOptionalString("prop")).isEmpty();
+        assertThat(conf.getString("outer.inner.prop")).isNull();
+        assertThat(conf.getOptionalString("outer.inner.prop")).isEmpty();
     }
 
     @Test
     void test_getString_null_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(true);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(true);
 
-        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getString("prop"));
-        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getString("prop"));
+        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getString("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getString("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-        assertThat(conf.getOptionalString("prop")).isEmpty();
+        assertThat(conf.getOptionalString("outer.inner.prop")).isEmpty();
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop {a = 1}", "prop = [a, b, c]" })
+    @ValueSource(strings = { "outer { inner { prop {a = 1} } }", "outer { inner { prop = [a, b, c] } }" })
     void test_getString_WrongType(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getString("prop"));
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getString("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getString("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getString("outer.inner.prop"));
 
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalString("prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalString("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -879,29 +894,29 @@ class OptionalConfigTest {
 
     @Test
     void test_getStringList() {
-        final OptionalConfig conf     = createConfiguration("prop = [a, b, c]");
+        final OptionalConfig conf     = createConfiguration("outer { inner { prop = [a, b, c] } }");
         final List<String>   expected = Lists.newArrayList("a", "b", "c");
 
-        assertThat(conf.getStringList("prop")).isEqualTo(expected);
-        assertThat(conf.getOptionalStringList("prop")).hasValue(expected);
+        assertThat(conf.getStringList("outer.inner.prop")).isEqualTo(expected);
+        assertThat(conf.getOptionalStringList("outer.inner.prop")).hasValue(expected);
 
-        assertThat(conf.getConfig().getStringList("prop")).isEqualTo(expected);
+        assertThat(conf.getConfig().getStringList("outer.inner.prop")).isEqualTo(expected);
     }
 
     @Test
     void test_getStringList_null_element_strictMode_false() {
-        final OptionalConfig conf     = createConfiguration("prop = [a, b, c, null, d]").setStrictMode(false);
+        final OptionalConfig conf     = createConfiguration("outer { inner { prop = [a, b, c, null, d] } }").setStrictMode(false);
         final List<String>   expected = Lists.newArrayList("a", "b", "c", null, "d");
-        assertThat(conf.getStringList("prop")).isEqualTo(expected);
-        assertThat(conf.getOptionalStringList("prop")).hasValue(expected);
+        assertThat(conf.getStringList("outer.inner.prop")).isEqualTo(expected);
+        assertThat(conf.getOptionalStringList("outer.inner.prop")).hasValue(expected);
     }
 
     @Test
     void test_getStringList_null_element_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = [a, b, c, null, d]").setStrictMode(true);
-        final Exception      e1   = assertThrows(ConfigException.WrongType.class, () -> conf.getStringList("prop"));
-        final Exception      e2   = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getStringList("prop"));
-        final Exception      e3   = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalStringList("prop"));
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = [a, b, c, null, d] } }").setStrictMode(true);
+        final Exception      e1   = assertThrows(ConfigException.WrongType.class, () -> conf.getStringList("outer.inner.prop"));
+        final Exception      e2   = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getStringList("outer.inner.prop"));
+        final Exception      e3   = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalStringList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -909,46 +924,46 @@ class OptionalConfigTest {
 
     @Test
     void test_getStringList_null_strictMode_false() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(false);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(false);
 
-        assertThat(conf.getStringList("prop")).isNull();
-        assertThat(conf.getOptionalStringList("prop")).isEmpty();
+        assertThat(conf.getStringList("outer.inner.prop")).isNull();
+        assertThat(conf.getOptionalStringList("outer.inner.prop")).isEmpty();
     }
 
     @Test
     void test_getStringList_null_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(true);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(true);
 
-        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getStringList("prop"));
-        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getStringList("prop"));
+        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getStringList("outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getStringList("outer.inner.prop"));
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
 
-        assertThat(conf.getOptionalStringList("prop")).isEmpty();
+        assertThat(conf.getOptionalStringList("outer.inner.prop")).isEmpty();
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop = 5.3", "prop = a", "prop { abc = 1 }" })
+    @ValueSource(strings = { "outer { inner { prop = 5.3 } }", "outer { inner { prop = a } }", "outer { inner { prop { abc = 1 } } }" })
     void test_getStringList_WrongType(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getStringList("prop"));
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getStringList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getStringList("outer.inner.prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getStringList("outer.inner.prop"));
 
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalStringList("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalStringList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop = [a, b, [1, 2]]", "prop = [a, b, {a = b}]" })
+    @ValueSource(strings = { "outer { inner { prop = [a, b, [1, 2]] } }", "outer { inner { prop = [a, b, {a = b}] } }" })
     void test_getStringList_WrongType_element(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getStringList("prop"));
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getStringList("prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getStringList("outer.inner.prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getStringList("outer.inner.prop"));
 
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalStringList("prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalStringList("outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -962,12 +977,12 @@ class OptionalConfigTest {
 
     @Test
     void test_getEnum() {
-        final OptionalConfig conf = createConfiguration("prop = SUNDAY");
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = SUNDAY } }");
 
-        assertThat(conf.getEnum(Day.class, "prop")).isEqualTo(Day.SUNDAY);
-        assertThat(conf.getConfig().getEnum(Day.class, "prop")).isEqualTo(Day.SUNDAY);
+        assertThat(conf.getEnum(Day.class, "outer.inner.prop")).isEqualTo(Day.SUNDAY);
+        assertThat(conf.getConfig().getEnum(Day.class, "outer.inner.prop")).isEqualTo(Day.SUNDAY);
 
-        assertThat(conf.getOptionalEnum(Day.class, "prop")).hasValue(Day.SUNDAY);
+        assertThat(conf.getOptionalEnum(Day.class, "outer.inner.prop")).hasValue(Day.SUNDAY);
     }
 
     @Test
@@ -982,13 +997,13 @@ class OptionalConfigTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop {day = SUNDAY}", "prop = [SUNDAY, MONDAY]" })
+    @ValueSource(strings = { "outer { inner { prop {day = SUNDAY} } }", "outer { inner { prop = [SUNDAY, MONDAY] } }" })
     void test_getEnum_WrongType(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getEnum(Day.class, "prop"));
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getEnum(Day.class, "prop"));
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalEnum(Day.class, "prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getEnum(Day.class, "outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getEnum(Day.class, "outer.inner.prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalEnum(Day.class, "outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -998,13 +1013,13 @@ class OptionalConfigTest {
      * We may want to file a bug because Enums are treated differently. Other entities always throw WrongType
      */
     @ParameterizedTest
-    @ValueSource(strings = { "prop = 1.5", "prop = true", "prop = ABC" })
+    @ValueSource(strings = { "outer { inner { prop = 1.5 } }", "outer { inner { prop = true } }", "outer { inner { prop = ABC } }" })
     void test_getEnum_BadValue(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.BadValue.class, () -> conf.getEnum(Day.class, "prop"));
-        final Exception e2 = assertThrows(ConfigException.BadValue.class, () -> conf.getConfig().getEnum(Day.class, "prop"));
-        final Exception e3 = assertThrows(ConfigException.BadValue.class, () -> conf.getOptionalEnum(Day.class, "prop"));
+        final Exception e1 = assertThrows(ConfigException.BadValue.class, () -> conf.getEnum(Day.class, "outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.BadValue.class, () -> conf.getConfig().getEnum(Day.class, "outer.inner.prop"));
+        final Exception e3 = assertThrows(ConfigException.BadValue.class, () -> conf.getOptionalEnum(Day.class, "outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -1012,45 +1027,45 @@ class OptionalConfigTest {
 
     @Test
     void test_getEnum_null_strictMode_false() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(false);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(false);
 
-        assertThat(conf.getEnum(Day.class, "prop")).isNull();
-        assertThat(conf.getOptionalEnum(Day.class, "prop")).isEmpty();
+        assertThat(conf.getEnum(Day.class, "outer.inner.prop")).isNull();
+        assertThat(conf.getOptionalEnum(Day.class, "outer.inner.prop")).isEmpty();
     }
 
     @Test
     void test_getEnum_null_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(true);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(true);
 
-        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getEnum(Day.class, "prop"));
-        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getEnum(Day.class, "prop"));
+        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getEnum(Day.class, "outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getEnum(Day.class, "outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
-        assertThat(conf.getOptionalEnum(Day.class, "prop")).isEmpty();
+        assertThat(conf.getOptionalEnum(Day.class, "outer.inner.prop")).isEmpty();
     }
 
     /*** Enum set ***/
 
     @Test
     void test_getEnumSet() {
-        final OptionalConfig conf     = createConfiguration("prop = [SUNDAY, MONDAY, TUESDAY]");
+        final OptionalConfig conf     = createConfiguration("outer { inner { prop = [SUNDAY, MONDAY, TUESDAY] } }");
         final EnumSet<Day>   expected = EnumSet.of(Day.SUNDAY, Day.MONDAY, Day.TUESDAY);
 
-        assertThat(conf.getEnumSet(Day.class, "prop")).isEqualTo(expected);
-        assertThat(conf.getOptionalEnumSet(Day.class, "prop")).hasValue(expected);
+        assertThat(conf.getEnumSet(Day.class, "outer.inner.prop")).isEqualTo(expected);
+        assertThat(conf.getOptionalEnumSet(Day.class, "outer.inner.prop")).hasValue(expected);
 
-        assertThat(conf.getConfig().getEnumList(Day.class, "prop")).containsExactlyElementsIn(expected);
+        assertThat(conf.getConfig().getEnumList(Day.class, "outer.inner.prop")).containsExactlyElementsIn(expected);
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop = 5.3", "prop = a", "prop { abc = 1 }" })
+    @ValueSource(strings = { "outer { inner { prop = 5.3 } }", "outer { inner { prop = a } }", "outer { inner { prop { abc = 1 } } }" })
     void test_getEnumSet_WrongType(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getEnumSet(Day.class, "prop"));
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getEnumList(Day.class, "prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getEnumSet(Day.class, "outer.inner.prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getEnumList(Day.class, "outer.inner.prop"));
 
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalEnumSet(Day.class, "prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalEnumSet(Day.class, "outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -1058,46 +1073,46 @@ class OptionalConfigTest {
 
     @Test
     void test_getEnumSet_null_strictMode_false() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(false);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(false);
 
-        assertThat(conf.getEnumSet(Day.class, "prop")).isNull();
-        assertThat(conf.getOptionalEnumSet(Day.class, "prop")).isEmpty();
+        assertThat(conf.getEnumSet(Day.class, "outer.inner.prop")).isNull();
+        assertThat(conf.getOptionalEnumSet(Day.class, "outer.inner.prop")).isEmpty();
     }
 
     @Test
     void test_getEnumSet_null_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = null").setStrictMode(true);
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = null } }").setStrictMode(true);
 
-        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getEnumSet(Day.class, "prop"));
-        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getEnumList(Day.class, "prop"));
+        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getEnumSet(Day.class, "outer.inner.prop"));
+        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getConfig().getEnumList(Day.class, "outer.inner.prop"));
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
 
-        assertThat(conf.getOptionalEnumSet(Day.class, "prop")).isEmpty();
+        assertThat(conf.getOptionalEnumSet(Day.class, "outer.inner.prop")).isEmpty();
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop = [SUNDAY, MONDAY, true]" })
+    @ValueSource(strings = { "outer { inner { prop = [SUNDAY, MONDAY, true] } }" })
     void test_getEnumSet_BadValue_element(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.BadValue.class, () -> conf.getEnumSet(Day.class, "prop"));
-        final Exception e3 = assertThrows(ConfigException.BadValue.class, () -> conf.getConfig().getEnumList(Day.class, "prop"));
+        final Exception e1 = assertThrows(ConfigException.BadValue.class, () -> conf.getEnumSet(Day.class, "outer.inner.prop"));
+        final Exception e3 = assertThrows(ConfigException.BadValue.class, () -> conf.getConfig().getEnumList(Day.class, "outer.inner.prop"));
 
-        final Exception e2 = assertThrows(ConfigException.BadValue.class, () -> conf.getOptionalEnumSet(Day.class, "prop"));
+        final Exception e2 = assertThrows(ConfigException.BadValue.class, () -> conf.getOptionalEnumSet(Day.class, "outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "prop = [SUNDAY, MONDAY, [SUNDAY, MONDAY]]", "prop = [SUNDAY, MONDAY, {a = SUNDAY}]" })
+    @ValueSource(strings = { "outer { inner { prop = [SUNDAY, MONDAY, [SUNDAY, MONDAY]] } }", "outer { inner { prop = [SUNDAY, MONDAY, {a = SUNDAY}] } }" })
     void test_getEnumSet_WrongType_element(final String configuration) {
         final OptionalConfig conf = createConfiguration(configuration);
 
-        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getEnumSet(Day.class, "prop"));
-        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getEnumList(Day.class, "prop"));
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getEnumSet(Day.class, "outer.inner.prop"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getEnumList(Day.class, "outer.inner.prop"));
 
-        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalEnumSet(Day.class, "prop"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalEnumSet(Day.class, "outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
@@ -1105,19 +1120,19 @@ class OptionalConfigTest {
 
     @Test
     void test_getEnumSet_null_element_strictMode_false() {
-        final OptionalConfig conf     = createConfiguration("prop = [SUNDAY, MONDAY, null, TUESDAY, null]").setStrictMode(false);
+        final OptionalConfig conf     = createConfiguration("outer { inner { prop = [SUNDAY, MONDAY, null, TUESDAY, null] } }").setStrictMode(false);
         final HashSet<Day>   expected = Sets.newHashSet(Day.SUNDAY, Day.MONDAY, null, Day.TUESDAY, null);
 
-        assertThat(conf.getEnumSet(Day.class, "prop")).isEqualTo(expected);
-        assertThat(conf.getOptionalEnumSet(Day.class, "prop")).hasValue(expected);
+        assertThat(conf.getEnumSet(Day.class, "outer.inner.prop")).isEqualTo(expected);
+        assertThat(conf.getOptionalEnumSet(Day.class, "outer.inner.prop")).hasValue(expected);
     }
 
     @Test
     void test_getEnumSet_null_element_strictMode_true() {
-        final OptionalConfig conf = createConfiguration("prop = [SUNDAY, MONDAY, null, TUESDAY, null]").setStrictMode(true);
-        final Exception      e1   = assertThrows(ConfigException.WrongType.class, () -> conf.getEnumSet(Day.class, "prop"));
-        final Exception      e2   = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getEnumList(Day.class, "prop"));
-        final Exception      e3   = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalEnumSet(Day.class, "prop"));
+        final OptionalConfig conf = createConfiguration("outer { inner { prop = [SUNDAY, MONDAY, null, TUESDAY, null] } }").setStrictMode(true);
+        final Exception      e1   = assertThrows(ConfigException.WrongType.class, () -> conf.getEnumSet(Day.class, "outer.inner.prop"));
+        final Exception      e2   = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig().getEnumList(Day.class, "outer.inner.prop"));
+        final Exception      e3   = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalEnumSet(Day.class, "outer.inner.prop"));
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());

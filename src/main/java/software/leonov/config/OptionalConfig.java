@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2023 Zhenya Leonov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package software.leonov.config;
 
 import static com.typesafe.config.ConfigValueType.BOOLEAN;
@@ -53,18 +68,16 @@ import com.typesafe.config.ConfigValueType;
  * final int nthreads = conf.getOptionalInteger("nthreads")
  *                          .orElse(Runtime.getRuntime().availableProcessors());
  *       
- * System.out.println("number of threads: " + nthreads);
+ * final ExecutorService exec = Executors.newFixedThreadPool(nthreads);
  * </pre>
  * <p>
  * <b>Please see</b> <a href="https://github.com/zleonov/optional-config" target="_blank">Optional Config on GitHub</a>
  * and Optional Config's <a href="https://github.com/zleonov/optional-config/wiki" target="_blank">Wiki</a> for further
- * discussion, details, API examples, and FAQ.</a>
+ * discussion, details, API examples, and FAQ.
  * <p>
  * <strong>Specifications:</strong>
  * <p>
- * The table below compares and contrasts this class to the {@link Config} class from Typesafe Config.
- * <p>
- * <pre>
+ * The table below compares and contrasts this class to the {@link Config} class from Typesafe Config. <pre>
  * <table border="1" cellpadding="5" cellspacing="1">
  *  <tr>
  *      <th>Method</th><th>Property value</th><th>{@link Config} result</th><th>Strict mode</th><th>OptionalConfig result</th>
@@ -152,8 +165,7 @@ import com.typesafe.config.ConfigValueType;
  *      <td>Missing value</td><td>N/A</td><td>On/Off</td><td>Exception</td>
  *  </tr>
  * </table>
- * </pre>
- * Note that the {@code Config.getEnumList} method is re-implemented as {@code OptionalConfig.getEnumSet} method.
+ * </pre> Note that the {@code Config.getEnumList} method is re-implemented as {@code OptionalConfig.getEnumSet} method.
  * <p>
  * <strong>Additional functionality:</strong>
  * <p>
@@ -167,7 +179,7 @@ import com.typesafe.config.ConfigValueType;
  *  </tr>
  *  <tr>
  *      <td>{@link #getShort(String)}</td><td rowspan=
-"4">Offering methods which operate on properties referencing {@code Short} values (for completeness).<br />These methods behave similarly to their Integer and Long counterparts.</td>
+"4">Offering methods which operate on properties referencing {@code Short} values (for completeness).<br>These methods behave similarly to their Integer and Long counterparts.</td>
  *  </tr>
  *  <tr>
  *      <td>{@link #getOptionalShort(String)}</td>
@@ -180,7 +192,7 @@ import com.typesafe.config.ConfigValueType;
  *  </tr>
  *  <tr>
  *      <td>{@link #getPath(String)}</td><td rowspan=
-"4">Offering methods which operate on properties referencing {@code Path} values.<br />A valid {@code java.nio.file.Path} may refer to an existing file or a directory or may not exist on the filesystem.</td>
+"4">Offering methods which operate on properties referencing {@code Path} values.<br>A valid {@code java.nio.file.Path} may refer to an existing file or a directory or may not exist on the filesystem.</td>
  *  </tr>
  *  <tr>
  *      <td>{@link #getOptionalPath(String)}</td>
@@ -193,7 +205,7 @@ import com.typesafe.config.ConfigValueType;
  *  </tr>
  *  <tr>
  *      <td>{@link #getFile(String, LinkOption...)}</td><td rowspan=
-"4">Offering methods which operate on properties referencing {@code Path} values.<br />A valid {@code java.nio.file.Path} may refer to an existing file or a directory or may not exist on the filesystem.</td>
+"4">Offering methods which operate on properties referencing {@code Path} values.<br>A valid {@code java.nio.file.Path} may refer to an existing file or a directory or may not exist on the filesystem.</td>
  *  </tr>
  *  <tr>
  *      <td>{@link #getOptionalFile(String, LinkOption...)}</td>
@@ -206,7 +218,7 @@ import com.typesafe.config.ConfigValueType;
  *  </tr>
  *  <tr>
  *      <td>{@link #getDirectory(String, LinkOption...)}</td><td rowspan=
-"4">Offering methods which operate on properties referencing existing directories.<br />These methods will throw exceptions if the referenced directories do not exist on the filesystem.</td>
+"4">Offering methods which operate on properties referencing existing directories.<br>These methods will throw exceptions if the referenced directories do not exist on the filesystem.</td>
  *  </tr>
  *  <tr>
  *      <td>{@link #getOptionalDirectory(String, LinkOption...)}</td>

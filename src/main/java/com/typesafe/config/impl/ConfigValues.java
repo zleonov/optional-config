@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2023 Zhenya Leonov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.typesafe.config.impl;
 
 import java.nio.file.Files;
@@ -28,13 +43,12 @@ public final class ConfigValues {
     private ConfigValues() {
     }
 
-    public static <T> T getValue(final boolean strictMode, final Config config, final String path, final Function<ConfigValue, T> func) {
-        return (T) getValue(strictMode, config, path, null, func);
+    public static <T> T getValue(final boolean strictMode, final Config config, final String path, final Function<ConfigValue, T> transformer) {
+        return (T) getValue(strictMode, config, path, null, transformer);
     }
 
-    public static <T> T getValue(final boolean strictMode, final Config config, final String path, final ConfigValueType expected, final Function<ConfigValue, T> valueTransformer) {
-        final Path p = Path.newPath(path);
-        return (T) valueTransformer.apply(transform(strictMode, path, getValue(((SimpleConfig) config).toFallbackValue(), p, p), expected));
+    public static <T> T getValue(final boolean strictMode, final Config config, final String path, final ConfigValueType expected, final Function<ConfigValue, T> transformer) {
+        return (T) transformer.apply(transform(strictMode, path, getValue(((SimpleConfig) config).toFallbackValue(), Path.newPath(path)), expected));
     }
 
     public static ConfigValue transformElement(final boolean strictMode, final String path, final ConfigValue from, final ConfigValueType to) {
@@ -109,6 +123,10 @@ public final class ConfigValues {
             return directory;
 
         throw new ConfigException.BadValue(value.origin(), path, directory + " is not a directory or does not exist");
+    }
+
+    private static AbstractConfigValue getValue(final AbstractConfigObject object, final Path path) {
+        return getValue(object, path, path);
     }
 
     private static AbstractConfigValue getValue(final AbstractConfigObject object, final Path path, final Path original) {
