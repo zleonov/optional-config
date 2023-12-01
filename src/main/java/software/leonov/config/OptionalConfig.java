@@ -230,7 +230,7 @@ import com.typesafe.config.ConfigValueType;
  *      <td>{@link #getOptionalDirectoryList(String, LinkOption...)}</td>
  *  </tr>
  *  <tr>
- *      <td>{@link #at(String)}</td><td>Offering the capability to get nested configuration objects as a standalone {@code OptionalConfig}.</td>
+ *      <td>{@link #at(String)}</td><td>Offering the capability to get nested configuration objects as a standalone OptionalConfig.</td>
  *  </tr>
  * </table>
  * </pre>
