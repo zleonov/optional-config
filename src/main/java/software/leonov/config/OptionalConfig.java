@@ -228,7 +228,10 @@ import com.typesafe.config.ConfigValueType;
  *  </tr>
  *  <tr>
  *      <td>{@link #getOptionalDirectoryList(String, LinkOption...)}</td>
- *  </tr>  
+ *  </tr>
+ *  <tr>
+ *      <td>{@link #at(String)}</td><td>Offering the capability to get nested configuration objects as a standalone {@code OptionalConfig}.</td>
+ *  </tr>
  * </table>
  * </pre>
  * 
@@ -260,8 +263,40 @@ public final class OptionalConfig {
      * 
      * @return the original {@link Config} object used to instantiate this {@link OptionalConfig}
      */
-    public Config getConfig() {
+    public Config getDelegate() {
         return config;
+    }
+
+    /**
+     * Returns an {@code OptionalConfig} representing the nested configuration object at the specified path expression.
+     * <p>
+     * For example given the following configuration: <pre>
+     * {
+     *     child {
+     *         prop1 = abc
+     *         prop2 = true
+     *     }
+     *     
+     *     prop3 = 5
+     *     
+     *     sibling {
+     *         prop4 = xyz
+     *     }
+     * }
+     * </pre> the call to {@code OptionalConfig.at("child")} will return the following nested configuration: <pre>
+     * prop1 = abc
+     * prop2 = true
+     * </pre> such that {@code parent.getString("child.prop1").equals(parent.at("child").getString("prop1"))}.
+     * 
+     * @param path the path expression
+     * @return the nested {@code Config} value at the requested path
+     * @throws com.typesafe.config.ConfigException.Missing   if property is absent or set to {@code null}
+     * @throws com.typesafe.config.ConfigException.WrongType if property value does not reference a nested configuration
+     *                                                       type
+     */
+    public OptionalConfig at(final String path) {
+        requireNonNull(path, "path == null");
+        return new OptionalConfig(config.getConfig(path), strictMode);
     }
 
     /**
