@@ -117,7 +117,7 @@
                             <goal>jar</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.basedir}/docs/apidocs/latest</outputDirectory>
+                            <outputDirectory>${project.basedir}/docs/api/latest</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -126,7 +126,7 @@
                             <goal>javadoc</goal>
                         </goals>
                         <configuration>
-                            <reportOutputDirectory>${project.basedir}/docs/apidocs</reportOutputDirectory>
+                            <reportOutputDirectory>${project.basedir}/docs/api</reportOutputDirectory>
                             <destDir>latest</destDir>
                         </configuration>
                     </execution>

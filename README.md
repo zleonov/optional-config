@@ -30,7 +30,7 @@ Goals
 
 Documentation
 -------------
-The latest API documentation can be accessed [here](https://zleonov.github.io/optional-config/apidocs/latest).
+The latest API documentation can be accessed [here](https://zleonov.github.io/optional-config/api/latest).
 
 But if you want something else?
 -------------------------------
