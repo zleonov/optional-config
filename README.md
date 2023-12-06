@@ -17,10 +17,10 @@ final int nthreads = conf.getOptionalInteger("nthreads")
 final ExecutorService exec = Executors.newFixedThreadPool(nthreads);
 ```
 
-**Please refer to the [Wiki](https://github.com/zleonov/optional-config/wiki) for details, specifications, API examples, and FAQ.**
-
 Documentation
 -------------
+Please refer to the [Wiki](https://github.com/zleonov/optional-config/wiki) for details, specifications, API examples, and FAQ.
+
 The latest API documentation can be accessed [here](https://zleonov.github.io/optional-config/api/latest).
 
 But if you want something else?
