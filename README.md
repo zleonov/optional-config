@@ -19,15 +19,6 @@ final int nthreads = conf.getOptionalInteger("nthreads")
 final ExecutorService exec = Executors.newFixedThreadPool(nthreads);
 ```
 
-Goals
------
-- Create `getOptionalXXXX` and `getOptionalXXXXList` methods analogous to their `getXXXX` and `getXXXXList` counterparts
-- Handle missing properties
-- Handle `null` values (including in lists)
-- Raise identical exceptions as Typesafe Config
-- No dependencies (other than Typesafe Config)
-- Java 8 or higher
-
 Documentation
 -------------
 The latest API documentation can be accessed [here](https://zleonov.github.io/optional-config/api/latest).
