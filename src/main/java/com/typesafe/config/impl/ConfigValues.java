@@ -25,6 +25,7 @@ import java.util.function.Function;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigException;
+import com.typesafe.config.ConfigObject;
 import com.typesafe.config.ConfigValue;
 import com.typesafe.config.ConfigValueType;
 
@@ -43,7 +44,7 @@ public final class ConfigValues {
     private ConfigValues() {
     }
 
-    public static <T> T getValue(final boolean strictMode, final Config config, final String path, final Function<ConfigValue, T> transformer) {
+    public static <T> T getValu(final boolean strictMode, final Config config, final String path, final Function<ConfigValue, T> transformer) {
         return (T) getValue(strictMode, config, path, null, transformer);
     }
 
@@ -58,6 +59,10 @@ public final class ConfigValues {
             throw new ConfigException.WrongType(value.origin(), path, "list of " + to.name(), "list of " + value.valueType().name());
 
         return value;
+    }
+
+    public static Config toConfig(final ConfigValue value, final String path) {
+        return value.valueType() == ConfigValueType.NULL ? null : ((ConfigObject) value).toConfig();
     }
 
     public static Integer toInteger(final ConfigValue value, final String path) {

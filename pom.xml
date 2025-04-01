@@ -112,9 +112,9 @@
                     <linksource>true</linksource>
                     <doctitle>
                         <![CDATA[
-                        ${project.name} ${project.version}
-                        <p>
-                        <div style='font-weight:normal; font-size:smaller'>${project.description}</div>
+                            ${project.name} ${project.version}
+                            <p>
+                            <div style='font-weight:normal; font-size:smaller'>${project.description}</div>
                         ]]>
                     </doctitle>
                     <detectJavaApiLink>true</detectJavaApiLink>

@@ -1136,10 +1136,12 @@ class OptionalConfigTest {
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
+    /*** Config ***/
+    
     @Test
-    void test_At() {
+    void test_getConfig() {
         final OptionalConfig config = createConfiguration("outer { inner { prop = abc\noptional = null } }").setStrictMode(false);
-        final OptionalConfig nested = config.at("outer.inner");
+        final OptionalConfig nested = config.getConfig("outer.inner");
 
         assertThat(nested.isStrictMode()).isEqualTo(config.isStrictMode());
         assertThat(nested.getString("optional")).isNull();
@@ -1159,7 +1161,50 @@ class OptionalConfigTest {
                                                         + "}");
         //@formatter:on
 
-        assertThat(parent.getString("child.prop1")).isEqualTo(parent.at("child").getString("prop1"));
+        assertThat(parent.getString("child.prop1")).isEqualTo(parent.getConfig("child").getString("prop1"));
+    }
+
+    @Test
+    void test_getConig_ConfigException_Missing() {
+        final OptionalConfig conf = emptyConfiguration();
+
+        final Exception e1 = assertThrows(ConfigException.Missing.class, () -> conf.getConfig("path"));
+        final Exception e2 = assertThrows(ConfigException.Missing.class, () -> conf.getDelegate().getConfig("path"));
+
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(conf.getOptionalConfig("path")).isEmpty();
+    }
+
+    @Test
+    void test_getConfig_null_strictMode_false() {
+        final OptionalConfig conf = createConfiguration("outer { inner = null }").setStrictMode(false);
+
+        assertThat(conf.getConfig("outer.inner")).isNull();
+        assertThat(conf.getOptionalConfig("outer.inner")).isEmpty();
+    }
+
+    @Test
+    void test_getConfig_null_strictMode_true() {
+        final OptionalConfig conf = createConfiguration("outer { inner = null }").setStrictMode(true);
+
+        final Exception e1 = assertThrows(ConfigException.Null.class, () -> conf.getConfig("outer.inner"));
+        final Exception e2 = assertThrows(ConfigException.Null.class, () -> conf.getDelegate().getConfig("outer.inner"));
+
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(conf.getOptionalInteger("outer.inner")).isEmpty();
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "outer { inner = 1 }", "outer { inner = true }", "outer { inner = abc }", "outer { inner = [1, 2, 3] }" })
+    void test_getConfig_WrongType(final String configuration) {
+        final OptionalConfig conf = createConfiguration(configuration);
+
+        final Exception e1 = assertThrows(ConfigException.WrongType.class, () -> conf.getConfig("outer.inner"));
+        final Exception e2 = assertThrows(ConfigException.WrongType.class, () -> conf.getDelegate().getConfig("outer.inner"));
+        final Exception e3 = assertThrows(ConfigException.WrongType.class, () -> conf.getOptionalConfig("outer.inner"));
+
+        assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
+        assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
 }
