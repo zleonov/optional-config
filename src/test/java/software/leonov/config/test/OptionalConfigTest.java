@@ -1137,7 +1137,7 @@ class OptionalConfigTest {
     }
 
     /*** Config ***/
-    
+
     @Test
     void test_getConfig() {
         final OptionalConfig config = createConfiguration("outer { inner { prop = abc\noptional = null } }").setStrictMode(false);
@@ -1205,6 +1205,34 @@ class OptionalConfigTest {
 
         assertThat(e1.getMessage()).isEqualTo(e2.getMessage());
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
+    }
+
+    @Test
+    void test_path_vs_object() {
+        final OptionalConfig pathConfig = createConfiguration("abc.int = 5\nabc.str=hello").setStrictMode(true);
+        final OptionalConfig objConfig  = createConfiguration("abc { int = 5\nstr=hello }").setStrictMode(true);
+
+        assertThat(objConfig.getConfig("abc").getInteger("int")).isEqualTo(5);
+        assertThat(pathConfig.getInteger("abc.int")).isEqualTo(5);
+
+        assertThat(objConfig.getConfig("abc").getString("str")).isEqualTo("hello");
+        assertThat(pathConfig.getString("abc.str")).isEqualTo("hello");
+
+        assertThat(objConfig.getConfig("abc").getInteger("int")).isEqualTo(5);
+        assertThat(pathConfig.getConfig("abc").getInteger("int")).isEqualTo(5);
+
+        assertThat(objConfig.getConfig("abc").getString("str")).isEqualTo("hello");
+        assertThat(pathConfig.getConfig("abc").getString("str")).isEqualTo("hello");
+
+        assertThat(objConfig.getOptionalConfig("abc").get().getString("str")).isEqualTo("hello");
+        assertThat(pathConfig.getOptionalConfig("abc").get().getString("str")).isEqualTo("hello");
+    }
+    
+    @Test
+    void test_getDirectory() {
+        final OptionalConfig conf = createConfiguration("dir = path/to/some/directory").setStrictMode(true);
+        
+        assertThrows(ConfigException.BadValue.class, () -> conf.getDirectory("dir"));
     }
 
 }

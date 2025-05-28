@@ -1281,4 +1281,9 @@ public final class OptionalConfig {
         return ifNull(path, LIST.name()) ? null : config.getList(path).stream().map(value -> transformElement(strictMode, path, value, to));
     }
 
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + "[" + getDelegate() + "]";
+    }
+
 }
