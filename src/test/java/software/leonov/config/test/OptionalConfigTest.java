@@ -61,7 +61,7 @@ class OptionalConfigTest {
     }
 
     static OptionalConfig createConfiguration(final String properties) {
-        return OptionalConfig.from(ConfigFactory.parseString(properties));
+        return OptionalConfig.from(ConfigFactory.parseString(properties).resolve());
     }
 
     static OptionalConfig emptyConfiguration() {
@@ -889,6 +889,22 @@ class OptionalConfigTest {
         assertThat(e1.getMessage()).isEqualTo(e3.getMessage());
     }
 
+    @Test
+    void test_getString_with_whitespace_no_quotes() {
+        final OptionalConfig conf = createConfiguration("foobar=foo bar");
+        assertThat(conf.getString("foobar")).isEqualTo("foo bar");
+    }
+
+    @Test
+    void test_getString_with_whitespace_and_special_chars() {
+        // unquoted
+        assertThrows(ConfigException.Parse.class, () -> createConfiguration("foobar=foo bar:xyz"));
+
+        // quoted
+        final OptionalConfig conf = createConfiguration("foobar=\"foo bar:xyz\"");
+        assertThat(conf.getString("foobar")).isEqualTo("foo bar:xyz");
+    }
+
     /*** String List ***/
 
     @Test
@@ -1227,12 +1243,36 @@ class OptionalConfigTest {
         assertThat(objConfig.getOptionalConfig("abc").get().getString("str")).isEqualTo("hello");
         assertThat(pathConfig.getOptionalConfig("abc").get().getString("str")).isEqualTo("hello");
     }
-    
+
     @Test
     void test_getDirectory() {
         final OptionalConfig conf = createConfiguration("dir = path/to/some/directory").setStrictMode(true);
-        
+
         assertThrows(ConfigException.BadValue.class, () -> conf.getDirectory("dir"));
+    }
+
+    @Test
+    void test_substitution() {
+
+        //@formatter:off        
+        final OptionalConfig conf = createConfiguration("foo=foo"
+                                                    + "\n\"abc def\"=\"abc def\""
+                                                    + "\nnested {"
+                                                    + "\n  foobar=\"${foo}bar\""
+                                                    + "\n  \"abc def xyz\"=${abc def}\" xyz\""
+                                                    + "\n  bar=bar"
+                                                    + "\n  barfoo=${nested.bar}foo"                               
+                                                    + "\n}");
+        
+        final OptionalConfig nested = conf.getConfig("nested");
+        //@formatter:on
+
+        assertThat(conf.getString("foo")).isEqualTo("foo");
+        assertThat(conf.getString("abc def")).isEqualTo("abc def");
+        assertThat(nested.getString("foobar")).isEqualTo("${foo}bar");
+        assertThat(nested.getString("abc def xyz")).isEqualTo("abc def xyz");
+        assertThat(nested.getString("bar")).isEqualTo("bar");
+        assertThat(nested.getString("barfoo")).isEqualTo("barfoo");
     }
 
 }
