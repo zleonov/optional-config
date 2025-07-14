@@ -358,7 +358,7 @@ public final class OptionalConfig {
 
     /**
      * Returns whether or not strict-mode is enabled. When strict-mode is enabled properties set to {@code null} are treated
-     * as {@link com.typesafe.config.ConfigException.Missing absent} purpose of {@code getXXXX} methods.
+     * as {@link com.typesafe.config.ConfigException.Missing absent} for the purpose of {@code getXXXX} methods.
      * 
      * @return whether or not strict-mode is enabled
      */
